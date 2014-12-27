@@ -1,0 +1,15 @@
+<ion-view view-title="Учреждения">
+    <ion-content>
+
+        <div class="list content-list">
+            <a class="item item-icon-left" ng-repeat="shop in shopList" href="#/app/shops/{{shop.id}}">
+                <i class="icon circle {{shop.category.icon}}" style="background-color: {{shop.category.color}} "></i>
+                <div class="content-item two-line-item">
+                    <h2>{{shop.name}}</h2>
+                    <p>{{shop.category.name}}</p>
+                </div>
+            </a>
+        </div>
+
+    </ion-content>
+</ion-view>

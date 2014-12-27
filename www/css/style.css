@@ -1,0 +1,271 @@
+/* Empty. Add your own CSS if you like */
+
+/**
+ * Common components
+ */
+
+body {
+    color: white;
+}
+
+body input {
+    color: white !important;
+}
+
+.bar.bar-positive {
+    border-color: #00b9f2;
+    background-color: #00b9f2;
+}
+
+.bar .title {
+    font-weight: bold;
+}
+
+.pane {
+    background-color: #1B3B53
+}
+
+.item-input {
+    background-color: #193952;
+}
+
+.button {
+    border-radius: 0px;
+}
+
+.button.button-positive {
+    border-color: #00b9f2;
+    background-color: #00b9f2;
+}
+
+.button.button-positive.button-outline {
+    border-color: #00b9f2;
+    color: #00b9f2;
+}
+
+
+/**
+ * Login page
+ */
+
+.logo-panel {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.logo-panel img {
+    max-width: 200px;
+}
+
+
+/**
+ * Menu
+ */
+
+.menu {
+    background-color: #153045;
+}
+
+    .menu .bar-stable {
+        background-color: #142d41;
+        border-bottom: none;
+        color: white;
+        height: 80px;
+        padding-top: 20px;
+    }
+
+    .menu .bar.bar-stable .title {
+        color: white;
+        position: initial;
+        font-weight: normal;
+    }
+
+.menu .has-header {
+    top: 80px;
+}
+
+.menu-list .item {
+    border-width: 0px;
+}
+
+.menu-list .item a {
+    border-width: 0px;
+    background-color: #153045;
+    color: white;
+    height: 60px;
+    padding: 0px 0px 0px 60px;
+}
+
+.menu-list .item a:active, .menu-list .item a.activated {
+    background-color: #00b9f2;
+}
+
+    .menu-content-item {
+        height: 100%;
+        border-bottom: solid 2px #24394e;
+        padding: 23px 0px 0px 5px;
+    }
+
+    .menu-list .item a.activated .menu-content-item {
+        border-bottom: none;
+    }
+
+    .menu-content-item h2 {
+        color: white;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+
+
+/**
+ * Tabs bar
+ */
+.has-header.has-tabs-top {
+    top: 106px;
+}
+
+.tabs {
+    height: 60px;
+    background-color: #153043;
+    border-color: #153043;
+}
+
+.tab-item {
+    line-height: 60px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    max-width: 160px;
+}
+
+.tab-item.active {
+    color: #02d0ff;
+}
+
+
+/**
+ * List pages
+ */
+
+.content-list .item, .content-list .item-complex .content-item {
+    background-color: #193952;
+}
+
+.content-list a.activated {
+    background-color: #00b9f2;
+}
+
+.content-list .item-divider {
+    padding: 10px 15px;
+    color: white;
+    background-color: #153043;
+    margin-top: 10px;
+    height: 40px;
+    border-width: 0px;
+}
+
+.content-list a.item {
+    height: 76px;
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+}
+
+    .item-icon-left .icon.circle {
+        min-width: 46px;
+        min-height: 46px;
+        height: 46px;
+        -moz-border-radius: 23px;
+        -webkit-border-radius: 23px;
+        border-radius: 23px;
+        top: 13px;
+        padding-left: 7px;
+    }
+
+
+    .content-list .item-icon-left {
+        padding-left: 75px;
+    }
+
+        .content-item {
+            height: 100%;
+            border-bottom: solid 2px #213f57;
+        }
+
+        .content-list a.activated .content-item,
+        .content-list a.last .content-item {
+            border-bottom: none;
+        }
+
+        .content-item.wrap h2 {
+            white-space: normal;
+        }
+
+        .content-item.two-line-item h2 {
+            padding-top: 17px;
+        }
+
+        .content-item.one-line-item h2 {
+            display: table;
+            height: 100%;
+        }
+
+        .content-item h2 span {
+            vertical-align:middle;
+            display: table-cell;
+        }
+
+        .content-item h2 {
+            color: white;
+            font-size: 18px;
+        }
+
+        .content-item p {
+            color: white;
+        }
+
+        .item-amount .amount {
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -moz-box;
+          display: -moz-flex;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          -webkit-align-items: center;
+          -moz-align-items: center;
+          align-items: center;
+          position: absolute;
+          top: 0;
+          height: 100%;
+          font-size: 18px;
+          right: 10px;
+        }
+
+
+
+/**
+ * Operations
+ */
+.item-amount .amount.positive-value {
+    color: #95ba6d;
+}
+
+.item-amount .amount.negative-value {
+    color: #fa5654;
+}
+
+
+
+/**
+ * Reports
+ */
+.report-circle {
+    background-color: #153043;
+}

@@ -1,0 +1,16 @@
+<ion-view view-title="Счета">
+    <ion-content>
+
+        <div class="list content-list">
+            <a class="item item-icon-left" ng-repeat="account in accounts" href="#/app/accounts/{{account.id}}">
+                <i class="icon circle {{account.icon}}" style="background-color: {{account.color}}"></i>
+                <div class="content-item one-line-item item-amount">
+                    <h2><span>{{account.name}}</span></h2>
+
+                    <i class="amount">{{account.total}} {{account.currency}}</i>
+                </div>
+            </a>
+        </div>
+
+    </ion-content>
+</ion-view>

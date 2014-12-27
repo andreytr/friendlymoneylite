@@ -1,0 +1,23 @@
+<ion-view view-title="История операций">
+    <ion-content>
+
+        <div class="list content-list">
+
+            <div class="item item-divider" ng-repeat-start="group in operations">
+                {{group.title}}
+            </div>
+
+            <a class="item item-icon-left " ng-repeat-end ng-repeat="operation in group.records" href="#/app/operation/{{operation.id}}" ng-class="{'last':$last}">
+                <i class="icon circle {{operation.category.icon}}" style="background-color: {{operation.category.color}}"></i>
+                <div class="content-item one-line-item item-amount">
+                    <h2><span>{{operation.description ||
+                            (operation.shop && operation.shop.name) ||
+                            operation.category.name}}</span></h2>
+
+                    <i class="amount {{operation.value > 0 ? 'positive-value' : 'negative-value'}}">{{operation.value}} {{operation.currency}}</i>
+                </div>
+            </a>
+        </div>
+
+    </ion-content>
+</ion-view>

@@ -1,0 +1,29 @@
+<ion-view hide-nav-bar="true">
+    <ion-content class="login-page">
+
+        <div class="logo-panel padding">
+            <img src="img/logo.png" class="padding"/>
+        </div>
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-person placeholder-icon"></i>
+                <input type="text" ng-model="user.username" placeholder="Имя пользователя">
+            </label>
+            <label class="item item-input">
+                <i class="icon ion-locked placeholder-icon"></i>
+                <input type="text" ng-model="user.password" placeholder="Пароль">
+            </label>
+        </div>
+
+        <div class="padding">
+            <button class="button button-block button-positive" ng-click="login(user)">
+                Войти
+            </button>
+
+            <a class="button button-block button-outline button-positive" href="#/registration">
+                Зарегистрироваться
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

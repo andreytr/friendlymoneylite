@@ -1,0 +1,24 @@
+<ion-view view-title="Отчеты">
+    <div class="tabs-top">
+        <div class="tabs">
+            <a class="tab-item" ng-click="changeTab('common')" ng-class="{active: tab == 'common'}">
+                Общие
+            </a>
+            <a class="tab-item" ng-click="changeTab('user')"  ng-class="{active: tab == 'user'}">
+                Пользовательские
+            </a>
+        </div>
+    </div>
+
+    <ion-content class="has-tabs-top">
+        <div class="list content-list">
+            <a class="item item-icon-left" ng-repeat="report in reportList" href="#/app/reports/{{report.name}}">
+                <i class="icon circle report-circle {{getIcon(report.type)}}"></i>
+                <div class="content-item wrap one-line-item">
+                    <h2><span>{{report.title}}</span></h2>
+                </div>
+            </a>
+        </div>
+
+    </ion-content>
+</ion-view>
