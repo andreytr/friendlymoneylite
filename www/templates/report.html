@@ -1,5 +1,9 @@
 <ion-view view-title="{{report.title}}">
     <ion-content>
-        <h1 class="padding">{{report.name}}</h1>
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div ac-chart="chartType" ac-data="chartData" ac-config="chartConfig" id='chart' class='chart padding'></div>
+
     </ion-content>
 </ion-view>

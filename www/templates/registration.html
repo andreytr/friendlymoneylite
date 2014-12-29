@@ -1,23 +1,25 @@
 <ion-view view-title="Регистрация">
     <ion-content>
-        <div class="list list-inset">
+        <div class="list padding-left-30 padding-right-30 padding-top-30">
             <label class="item item-input">
-                <input type="text" ng-model="user.username" placeholder="Имя пользователя">
+                <input type="text" ng-model="user.username" placeholder="Имя пользователя" required>
             </label>
             <label class="item item-input">
-                <input type="password" ng-model="user.password" placeholder="Пароль">
+                <input type="password" ng-model="user.password" placeholder="Пароль" required>
             </label>
             <label class="item item-input">
-                <input type="password" ng-model="user.confirmPassword" placeholder="Подтверждение пароля">
+                <input type="password" ng-model="user.confirmPassword" placeholder="Подтверждение пароля" required>
             </label>
+
+            <p class="padding-top-30">
+                Регистрируясь подтверждаю согласие с <a href="http://friendly-money.com/agreement" target="_blank" class="external-link">условиями пользовательского соглашения</a>
+            </p>
         </div>
 
-        <p class="padding">
-            Регистрируясь подтверждаю согласие с <a href="" target="_blank">условиями пользовательского соглашения</a>
-        </p>
 
-        <div class="padding">
-            <button class="button button-block button-positive" ng-click="signIn(user)">
+
+        <div class="padding-left-30 padding-right-30">
+            <button class="button button-block button-positive" ng-click="register(user)">
                 Зарегистрироваться
             </button>
         </div>

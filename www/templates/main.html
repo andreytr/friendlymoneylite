@@ -1,0 +1,50 @@
+<ion-view view-title="Главная">
+    <ion-content>
+        <div class="list content-list">
+
+            <div class="item item-divider">
+                На сегодня запланировано:
+            </div>
+
+            <a class="item item-icon-left " ng-repeat="operation in scheduledOperations" href="#/app/operation/{{operation.id}}" ng-class="{'last':$last}">
+                <i class="icon circle {{operation.category.icon}}" style="background-color: {{operation.category.color}}"></i>
+                <div class="content-item one-line-item item-amount">
+                    <h2><span>{{operation.description ||
+                            (operation.shop && operation.shop.name) ||
+                            operation.category.name}}</span></h2>
+
+                    <i class="amount {{operation.value > 0 ? 'positive-value' : 'negative-value'}}">{{operation.value}} {{operation.currency}}</i>
+                </div>
+            </a>
+
+            <div class="item item-divider">
+                Сегодня, 28 декабря:
+            </div>
+
+            <a class="item item-icon-left " ng-repeat="operation in operations" href="#/app/operation/{{operation.id}}" ng-class="{'last':$last}">
+                <i class="icon circle {{operation.category.icon}}" style="background-color: {{operation.category.color}}"></i>
+                <div class="content-item one-line-item item-amount">
+                    <h2><span>{{operation.description ||
+                            (operation.shop && operation.shop.name) ||
+                            operation.category.name}}</span></h2>
+
+                    <i class="amount {{operation.value > 0 ? 'positive-value' : 'negative-value'}}">{{operation.value}} {{operation.currency}}</i>
+                </div>
+            </a>
+
+            <div class="item item-divider">
+                Затраты текущего месяца:
+            </div>
+
+            <p class="padding">Тут будет отчет</p>
+
+            <div class="item item-divider">
+                Баланс за последние 3 месяца:
+            </div>
+
+            <p class="padding">Тут будет отчет</p>
+
+        </div>
+
+    </ion-content>
+</ion-view>

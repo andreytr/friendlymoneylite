@@ -5,25 +5,26 @@
             <img src="img/logo.png" class="padding"/>
         </div>
 
-        <div class="list list-inset">
+        <div class="list padding-left-30 padding-right-30">
             <label class="item item-input">
                 <i class="icon ion-person placeholder-icon"></i>
-                <input type="text" ng-model="user.username" placeholder="Имя пользователя">
+                <input type="text" ng-model="user.username" placeholder="Имя пользователя" required>
             </label>
             <label class="item item-input">
                 <i class="icon ion-locked placeholder-icon"></i>
-                <input type="text" ng-model="user.password" placeholder="Пароль">
+                <input type="password" ng-model="user.password" placeholder="Пароль" required>
             </label>
         </div>
 
-        <div class="padding">
+        <div class="padding-left-30 padding-right-30">
             <button class="button button-block button-positive" ng-click="login(user)">
                 Войти
             </button>
 
-            <a class="button button-block button-outline button-positive" href="#/registration">
+            <button class="button button-block button-positive button-outline" ng-click="register()">
                 Зарегистрироваться
-            </a>
+            </button>
+
         </div>
     </ion-content>
 </ion-view>

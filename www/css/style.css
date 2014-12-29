@@ -22,42 +22,11 @@ body input {
 }
 
 .pane {
-    background-color: #1B3B53
+    background-color: #1B3B53;
 }
 
-.item-input {
-    background-color: #193952;
-}
-
-.button {
-    border-radius: 0px;
-}
-
-.button.button-positive {
-    border-color: #00b9f2;
-    background-color: #00b9f2;
-}
-
-.button.button-positive.button-outline {
-    border-color: #00b9f2;
-    color: #00b9f2;
-}
-
-
-/**
- * Login page
- */
-
-.logo-panel {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-.logo-panel img {
-    max-width: 200px;
+.external-link {
+    color: white;
 }
 
 
@@ -72,13 +41,13 @@ body input {
     .menu .bar-stable {
         background-color: #142d41;
         border-bottom: none;
-        color: white;
+        color: #02d0ff;
         height: 80px;
         padding-top: 20px;
     }
 
     .menu .bar.bar-stable .title {
-        color: white;
+        color: #02d0ff;
         position: initial;
         font-weight: normal;
     }
@@ -119,6 +88,9 @@ body input {
         text-transform: uppercase;
     }
 
+    .menu-list .item-icon-left .icon {
+        font-size: 25px;
+    }
 
 
 /**
@@ -249,6 +221,106 @@ body input {
         }
 
 
+/**
+ * Form
+ */
+.item-input {
+    background-color: #1B3B53;
+    border: none;
+    border-bottom: solid 1px #2d4b63;
+    margin-bottom: 15px;
+}
+
+.item-input .placeholder-icon {
+    padding-right: 20px;
+}
+
+.padding-left-30 {
+    padding-left: 30px;
+}
+
+.padding-right-30 {
+    padding-right: 30px;
+}
+
+.padding-top-30 {
+    padding-top: 30px;
+}
+
+
+.button {
+    border-radius: 0px;
+    min-height: 55px;
+}
+
+.button.button-positive {
+    border-color: #00b9f2;
+    background-color: #00b9f2;
+}
+
+.button.button-positive.button-outline {
+    border-color: #00b9f2;
+    color: #00b9f2;
+}
+
+.button.button-positive.activated,
+.button.button-positive.button-outline.activated {
+    border-color: #02d0ff;
+    background-color: #02d0ff;
+}
+
+
+
+/**
+ * Popups
+ */
+
+.popup-container .popup {
+    background-color: #008db8;
+}
+
+.popup .button.button-positive {
+    background-color: #0080a7;
+    border-color: #0080a7;
+}
+
+.popup-container.error .popup {
+    background-color: #953d3c;
+}
+
+.error .popup .button.button-positive {
+    background-color: #8c3b3a;
+    border-color: #8c3b3a;
+}
+
+.popup .popup-head {
+    border-bottom: none;
+}
+
+.popup .popup-body {
+    text-align: center;
+}
+
+
+
+
+/**
+ * Login page
+ */
+
+.logo-panel {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.logo-panel img {
+    max-width: 200px;
+}
+
+
 
 /**
  * Operations
@@ -268,4 +340,9 @@ body input {
  */
 .report-circle {
     background-color: #153043;
+}
+
+.chart {
+    height: 400px;
+    width: 100%;
 }

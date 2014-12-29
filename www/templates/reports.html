@@ -11,8 +11,10 @@
     </div>
 
     <ion-content class="has-tabs-top">
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
         <div class="list content-list">
-            <a class="item item-icon-left" ng-repeat="report in reportList" href="#/app/reports/{{report.name}}">
+            <a class="item item-icon-left" ng-repeat="report in reports | filter : {isCustom : tab == 'user'}" href="#/app/reports/{{report.name}}">
                 <i class="icon circle report-circle {{getIcon(report.type)}}"></i>
                 <div class="content-item wrap one-line-item">
                     <h2><span>{{report.title}}</span></h2>
