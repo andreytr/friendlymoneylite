@@ -21,6 +21,10 @@ body input {
     font-weight: bold;
 }
 
+.nav-bar-block .right-buttons .button-icon {
+    color: white;
+}
+
 .pane {
     background-color: #1B3B53;
 }

@@ -1,4 +1,4 @@
-var mainUrl = 'http://localhost:8080/friendly-money/api/';
+var mainUrl = 'http://192.168.0.101:8080/friendly-money/api/';
 
 
 angular.module('fm.services', [])
@@ -72,6 +72,7 @@ angular.module('fm.services', [])
 .factory('reportService', function($http) {
 
     var reportList = [];
+    var dataFilter = {};
 
     var loadReportList = function() {
         return $http.get(mainUrl + "report/list")
@@ -93,11 +94,21 @@ angular.module('fm.services', [])
         return null;
     }
 
+    var getDataFilter = function() {
+        return dataFilter;
+    }
+
+    var setDataFilter = function(filter) {
+        dataFilter = filter;
+    }
+
     return {
         getList: loadReportList,
         getReportByName: getReportByName,
-        getData: function(reportName, filter) {
-            return $http.post(mainUrl + "report/data?reportName=" + reportName, filter)
+        setDataFilter: setDataFilter,
+        getDataFilter: getDataFilter,
+        getData: function(reportName) {
+            return $http.post(mainUrl + "report/data?reportName=" + reportName, dataFilter)
              .success(function(result) {
                  return result;
              });

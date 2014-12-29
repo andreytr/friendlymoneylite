@@ -431,6 +431,22 @@ angular.module('fm.controllers', ['fm.services', 'angularCharts'])
     };
 
     $scope.doRefresh(false);
+
+    $scope.goToFilter = function(report) {
+        $state.go('app.reportFilter', {reportName: report.name});
+    }
+})
+
+.controller('ReportFilterCtrl', function($scope, $state, $stateParams, reportService) {
+
+    $scope.reportName = $stateParams['reportName'];
+    $scope.filter = reportService.getDataFilter();
+
+    $scope.save = function() {
+        reportService.setDataFilter($scope.filter);
+        $state.go('app.report', {reportName: $scope.reportName, refresh: true});
+    }
+
 });
 
 

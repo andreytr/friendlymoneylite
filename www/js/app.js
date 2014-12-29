@@ -176,6 +176,16 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
                 controller: 'ReportCtrl'
             }
         }
+    })
+
+    .state('app.reportFilter', {
+        url: "/reportFilter/:reportName",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/reportFilter.html",
+                controller: 'ReportFilterCtrl'
+            }
+        }
     });
 
 

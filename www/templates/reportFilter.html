@@ -1,0 +1,26 @@
+<ion-view view-title="Фильтр">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-checkmark" ng-click="save()">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list padding-left-30 padding-right-30 padding-top-30">
+            <label class="item item-input">
+                <input type="text" ng-model="filter.fromDate" placeholder="Начиная с даты" required>
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="filter.toDate" placeholder="Заканчивая датой" required>
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="filter.accountList" placeholder="Все счета" required>
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="filter.categoryList" placeholder="Все категории" required>
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="filter.shopList" placeholder="Все учреждения" required>
+            </label>
+
+        </div>
+    </ion-content>
+</ion-view>

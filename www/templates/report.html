@@ -1,4 +1,10 @@
 <ion-view view-title="{{report.title}}">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-arrow-down-a" ng-click="save(report)">
+        </button>
+        <button class="button-icon icon ion-funnel" ng-click="goToFilter(report)">
+        </button>
+    </ion-nav-buttons>
     <ion-content>
         <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
         </ion-refresher>
