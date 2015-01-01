@@ -1,3 +1,4 @@
+//var mainUrl = 'https://friendly-money.com/api/';
 var mainUrl = 'http://192.168.0.101:8080/friendly-money/api/';
 
 
@@ -49,6 +50,18 @@ angular.module('fm.services', [])
    return {
         getList: function() {
              return $http.get(mainUrl + "account/list")
+             .then(function(result) {
+                 return result.data;
+             });
+        }
+   }
+})
+
+.factory('categoryService', function($http) {
+
+   return {
+        getTreeList: function() {
+             return $http.get(mainUrl + "categories/treeAmountList")
              .then(function(result) {
                  return result.data;
              });

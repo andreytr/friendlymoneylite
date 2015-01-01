@@ -259,6 +259,34 @@ angular.module('fm.controllers', ['fm.services', 'angularCharts'])
 
 })
 
+
+.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, categoryService) {
+
+    $scope.doRefresh = function(isPull) {
+        categoryService.getTreeList().then(function(data) {
+            $scope.categoryList = data;
+        });
+
+        if (isPull) {
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
+        }
+    };
+
+    $scope.getIcon = function(category) {
+        return 'ion-pound';
+    };
+
+    $scope.changeTab = function(tab) {
+        $scope.tab = tab;
+        $ionicScrollDelegate.scrollTop();
+    };
+
+    $scope.changeTab('OUTCOME');
+    $scope.doRefresh(false);
+})
+
+
 .controller('ShopListCtrl', function($scope, $stateParams) {
     $scope.shopList = [{
         id  : 1,

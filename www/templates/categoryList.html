@@ -1,0 +1,38 @@
+<script type="text/ng-template"  id="categoryItem.html">
+    <a class="item item-icon-left" href="#/app/categoryList/{{category.id}}" on-hold="showMenu(category)">
+        <i class="icon circle {{getIcon(category)}}" style="background-color: {{category.color}}"></i>
+        <div class="content-item one-line-item wrap">
+            <h2><span>{{category.name}}</span></h2>
+        </div>
+    </a>
+    <div ng-repeat="category in category.childCategoryList  | filter : {type : tab}" ng-include="'categoryItem.html'" ng-init="t = t + 1" class="padding-left-{{t}}">
+
+    </div>
+</script>
+
+
+<ion-view view-title="Категории">
+    <div class="tabs-top">
+        <div class="tabs">
+            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">
+                Расход
+            </a>
+            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}">
+                Доход
+            </a>
+        </div>
+    </div>
+
+
+    <ion-content class="has-tabs-top">
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div class="list content-list">
+            <div ng-repeat="category in categoryList | filter : {type : tab}" ng-include="'categoryItem.html'" ng-init="t = 0">
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-view>
