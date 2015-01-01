@@ -1,0 +1,20 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive" align-title="center">
+        <div class="buttons">
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="closeModal()"></button>
+        </div>
+        <h1 class="title">{{category.id ? 'Редактирование': 'Новая категория'}}</h1>
+        <div class="buttons">
+            <button class="button-icon icon ion-checkmark-round" ng-click="saveCategory(category)"></button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content>
+        <div class="list padding-left-30 padding-right-30 padding-top-30">
+            <label class="item item-input">
+                <input type="text" ng-model="category.name" placeholder="Наименование" required>
+            </label>
+        </div>
+    </ion-content>
+
+</div>

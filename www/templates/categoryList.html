@@ -1,5 +1,5 @@
 <script type="text/ng-template"  id="categoryItem.html">
-    <a class="item item-icon-left" href="#/app/categoryList/{{category.id}}" on-hold="showMenu(category)">
+    <a class="item item-icon-left" ng-click="editCategory(category)" on-hold="showMenu(category)">
         <i class="icon circle {{getIcon(category)}}" style="background-color: {{category.color}}"></i>
         <div class="content-item one-line-item wrap">
             <h2><span>{{category.name}}</span></h2>
@@ -12,6 +12,11 @@
 
 
 <ion-view view-title="Категории">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-plus-round" ng-click="addCategory()">
+        </button>
+    </ion-nav-buttons>
+
     <div class="tabs-top">
         <div class="tabs">
             <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">

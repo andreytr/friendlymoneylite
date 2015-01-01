@@ -61,10 +61,17 @@ angular.module('fm.services', [])
 
    return {
         getTreeList: function() {
-             return $http.get(mainUrl + "categories/treeAmountList")
-             .then(function(result) {
-                 return result.data;
-             });
+            return $http.get(mainUrl + "categories/treeAmountList")
+            .then(function(result) {
+                return result.data;
+            });
+        },
+
+        update: function(category) {
+            return $http.post(mainUrl + "categories/update", category)
+            .success(function(result) {
+                return result;
+            });
         }
    }
 })
@@ -73,10 +80,10 @@ angular.module('fm.services', [])
 
    return {
         getList: function() {
-             return $http.post(mainUrl + "operation/list", {})
-             .success(function(result) {
-                 return result;
-             });
+            return $http.post(mainUrl + "operation/list", {})
+            .success(function(result) {
+                return result;
+            });
         }
    }
 })

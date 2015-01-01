@@ -260,7 +260,7 @@ angular.module('fm.controllers', ['fm.services', 'angularCharts'])
 })
 
 
-.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, categoryService) {
+.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, categoryService) {
 
     $scope.doRefresh = function(isPull) {
         categoryService.getTreeList().then(function(data) {
@@ -284,7 +284,51 @@ angular.module('fm.controllers', ['fm.services', 'angularCharts'])
 
     $scope.changeTab('OUTCOME');
     $scope.doRefresh(false);
+
+
+
+    $ionicModal.fromTemplateUrl('templates/categoryEdit.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal
+    })
+
+    $scope.addCategory = function() {
+        $scope.category = {
+            type: $scope.tab
+        };
+        $scope.modal.show();
+    }
+
+    $scope.editCategory = function(category) {
+        $scope.category = category;
+        $scope.modal.show();
+    }
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+
+    $scope.saveCategory = function(category) {
+        var data = {
+            id  : category.id,
+            name: category.name,
+            type: category.type
+        }
+
+        categoryService.update(data).then(function(data) {
+            $scope.modal.hide();
+            $scope.doRefresh(false);
+        });
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+
 })
+
 
 
 .controller('ShopListCtrl', function($scope, $stateParams) {

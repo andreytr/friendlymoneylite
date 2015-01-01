@@ -21,11 +21,11 @@ body input {
     font-weight: bold;
 }
 
-.nav-bar-block .right-buttons .button-icon {
+.bar-positive .buttons .button-icon {
     color: white;
 }
 
-.pane {
+.pane, .scroll-content {
     background-color: #1B3B53;
 }
 
