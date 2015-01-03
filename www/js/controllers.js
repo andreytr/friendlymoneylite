@@ -197,15 +197,12 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 .controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService) {
 
     $scope.showMenu = function(account) {
-        $ionicActionSheet.show({
+        var hideSheet = $ionicActionSheet.show({
             destructiveText: 'Удалить',
             cancelText: 'Отмена',
-            buttonClicked: function(index) {
-                console.info(index);
-                return true;
-            },
             destructiveButtonClicked: function() {
-                console.info("delete");
+                $scope.remove(account);
+                hideSheet();
             }
         });
     };
@@ -265,6 +262,12 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         });
     };
 
+    $scope.remove = function(account) {
+        accountService.remove(account.id).then(function(data) {
+            $scope.doRefresh(false);
+        });
+    }
+
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
     });
@@ -272,6 +275,20 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 
 .controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, categoryService) {
+
+$scope.showMenu = function(account) {
+        $ionicActionSheet.show({
+            destructiveText: 'Удалить',
+            cancelText: 'Отмена',
+            buttonClicked: function(index) {
+                console.info(index);
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                console.info("delete");
+            }
+        });
+    };
 
     $scope.doRefresh = function(isPull) {
         categoryService.getTreeList().then(function(data) {

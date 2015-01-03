@@ -71,6 +71,12 @@ angular.module('fm.services', [])
             .success(function(result) {
                 return result;
             });
+        },
+        remove: function(accountId) {
+            return $http.post(mainUrl + "account/delete/" + accountId)
+            .success(function(result) {
+                return result;
+            });
         }
    }
 })
@@ -179,10 +185,10 @@ angular.module('fm.services', [])
         getAccountColor: function(type) {
              if (type) {
                  if (type.type == 1) {
-                     return '#94b46b';
+                     return '#b9ab6a';
                  }
                  if (type.type == 2) {
-                     return '#b9ab6a';
+                     return '#94b46b';
                  }
                  if (type.type == 3) {
                      return '#b46e70';
