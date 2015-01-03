@@ -201,6 +201,10 @@ body input {
             font-size: 18px;
         }
 
+        .item.selected-value .content-item h2 {
+            color: #00baf1;
+        }
+
         .content-item p {
             color: white;
         }

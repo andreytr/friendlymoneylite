@@ -1,4 +1,4 @@
-angular.module('fm.controllers', ['fm.services', 'angularCharts'])
+angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
@@ -314,7 +314,10 @@ angular.module('fm.controllers', ['fm.services', 'angularCharts'])
         var data = {
             id  : category.id,
             name: category.name,
-            type: category.type
+            type: category.type,
+            parentCategory: {
+                id: category.parentId
+            }
         }
 
         categoryService.update(data).then(function(data) {
