@@ -122,18 +122,8 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
         url: "/accounts",
         views: {
             'menuContent': {
-                templateUrl: "templates/accounts.html",
+                templateUrl: "templates/accountList.html",
                 controller: 'AccountsCtrl'
-            }
-        }
-    })
-
-    .state('app.account', {
-        url: "/accounts/:accountId",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/account.html",
-                controller: 'AccountCtrl'
             }
         }
     })

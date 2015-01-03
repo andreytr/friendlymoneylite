@@ -1,0 +1,24 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive" align-title="center">
+        <div class="buttons">
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="close()"></button>
+        </div>
+       <h1 class="title">Тип счета</h1>
+    </ion-header-bar>
+
+
+    <ion-content>
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div class="list content-list" can-swipe="true" can-swipe>
+            <a class="item item-icon-left" ng-repeat="type in typeList" ng-click="select(type)">
+                <i class="icon circle {{getIcon(type)}}" style="background-color: {{getColor(type)}}"></i>
+                <div class="content-item one-line-item item-amount">
+                    <h2><span>{{type.name}}</span></h2>
+                </div>
+            </a>
+        </div>
+
+    </ion-content>
+</div>

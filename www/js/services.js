@@ -53,6 +53,18 @@ angular.module('fm.services', [])
              .then(function(result) {
                  return result.data;
              });
+        },
+        getTypeList: function() {
+             return $http.get(mainUrl + "account/typeList")
+             .then(function(result) {
+                 return result.data;
+             });
+        },
+        getCurrencyList: function() {
+             return $http.get(mainUrl + "account/currencyList")
+             .then(function(result) {
+                 return result.data;
+             });
         }
    }
 })
@@ -135,5 +147,46 @@ angular.module('fm.services', [])
         }
     }
 
+})
+
+.factory('iconService', function() {
+
+   return {
+        getAccountIcon: function(type) {
+             if (type) {
+                 if (type.type == 1) {
+                     return 'ion-cash';
+                 }
+                 if (type.type == 2) {
+                     return 'ion-card';
+                 }
+                 if (type.type == 3) {
+                     return 'ion-briefcase';
+                 }
+                 if (type.type == 4) {
+                     return 'ion-earth';
+                 }
+             }
+             return 'ion-help';
+        },
+
+        getAccountColor: function(type) {
+             if (type) {
+                 if (type.type == 1) {
+                     return '#94b46b';
+                 }
+                 if (type.type == 2) {
+                     return '#b9ab6a';
+                 }
+                 if (type.type == 3) {
+                     return '#b46e70';
+                 }
+                 if (type.type == 4) {
+                     return '#6da1b6';
+                 }
+             }
+             return '#00b9f2';
+        }
+   }
 });
 

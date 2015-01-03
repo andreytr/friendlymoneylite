@@ -1,8 +1,15 @@
 <ion-view view-title="Счета">
-    <ion-content>
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-plus-round" ng-click="add()">
+        </button>
+    </ion-nav-buttons>
 
-        <div class="list content-list" can-swipe="true" can-swipe>
-            <a class="item item-icon-left" ng-repeat="account in accounts" href="#/app/accounts/{{account.id}}" on-hold="showMenu(account)">
+    <ion-content>
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div class="list content-list">
+            <a class="item item-icon-left" ng-repeat="account in accountList" ng-click="edit(account)" on-hold="showMenu(account)">
                 <i class="icon circle {{getIcon(account.type)}}" style="background-color: {{getColor(account.type)}}"></i>
                 <div class="content-item one-line-item item-amount">
                     <h2><span>{{account.name}}</span></h2>

@@ -194,7 +194,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('AccountsCtrl', function($scope, $ionicActionSheet, accountService) {
+.controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService) {
 
     $scope.showMenu = function(account) {
         $ionicActionSheet.show({
@@ -211,52 +211,65 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.getColor = function(type) {
-        if (type) {
-            if (type.type == 1) {
-                return '#94b46b';
-            }
-            if (type.type == 2) {
-                return '#b9ab6a';
-            }
-            if (type.type == 3) {
-                return '#b46e70';
-            }
-            if (type.type == 4) {
-                return '#6da1b6';
-            }
-        }
-        return '#00b9f2';
+        return iconService.getAccountColor(type);
     };
 
     $scope.getIcon = function(type) {
-        if (type) {
-            if (type.type == 1) {
-                return 'ion-cash';
-            }
-            if (type.type == 2) {
-                return 'ion-card';
-            }
-            if (type.type == 3) {
-                return 'ion-briefcase';
-            }
-            if (type.type == 4) {
-                return 'ion-earth';
-            }
-        }
-        return 'ion-help';
+        return iconService.getAccountIcon(type);
     };
 
-    accountService.getList().then(function(data) {
-        $scope.accounts = data;
+
+    $scope.doRefresh = function(isPull) {
+        accountService.getList().then(function(data) {
+            $scope.accountList = data;
+        });
+
+        if (isPull) {
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
+        }
+    };
+
+    $scope.doRefresh(false);
+
+
+
+    $ionicModal.fromTemplateUrl('templates/accountEdit.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal
+    })
+
+    $scope.add = function() {
+        $scope.account = {};
+        $scope.modal.show();
+    }
+
+    $scope.edit = function(account) {
+        $scope.account = account;
+        $scope.modal.show();
+    }
+
+    $scope.closeForm = function() {
+        $scope.modal.hide();
+    };
+
+    $scope.save = function(account) {
+        var data = {
+            id  : account.id,
+            name: account.name
+        }
+
+        accountService.update(data).then(function(data) {
+            $scope.modal.hide();
+            $scope.doRefresh(false);
+        });
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
     });
-
-
-
-})
-
-
-.controller('AccountCtrl', function($scope, $stateParams) {
-
 })
 
 
