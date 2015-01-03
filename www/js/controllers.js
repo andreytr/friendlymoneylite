@@ -218,6 +218,9 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         return iconService.getAccountIcon(type);
     };
 
+    $scope.getCurrencyIcon = function(currency) {
+        return iconService.getCurrencyIcon(currency.type);
+    };
 
     $scope.doRefresh = function(isPull) {
         accountService.getList().then(function(data) {
