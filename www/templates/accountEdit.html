@@ -15,17 +15,9 @@
                 <input type="text" ng-model="account.name" placeholder="Наименование" required>
             </label>
 
-            <account-type-select value="account.type">
+            <account-type-select value="account.type"></account-type-select>
+            <account-currency-select value="account.currency"></account-currency-select>
 
-            </account-type-select>
-
-            <label class="item item-input">
-                <input type="text" ng-model="account.name" placeholder="Тип счета" required>
-            </label>
-
-            <label class="item item-input">
-                <input type="text" ng-model="account.name" placeholder="Валюта счета" required>
-            </label>
 
         </div>
     </ion-content>

@@ -66,7 +66,9 @@ angular.module('fm.directives', [])
             value: "=value"
         },
         link: function($scope, element, attrs) {
-            $ionicModal.fromTemplateUrl("templates/accountTypeSelect.html", {
+            $scope.title = "Тип счета";
+
+            $ionicModal.fromTemplateUrl("templates/typeRecordSelect.html", {
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
@@ -85,7 +87,7 @@ angular.module('fm.directives', [])
 
             $scope.doRefresh = function(isPull) {
                 accountService.getTypeList().then(function(data) {
-                    $scope.typeList = data;
+                    $scope.recordList = data;
                 });
 
                 if (isPull) {
@@ -101,6 +103,64 @@ angular.module('fm.directives', [])
 
             $scope.getColor = function(type) {
                 return iconService.getAccountColor(type);
+            };
+
+            $scope.getIcon = function(type) {
+                return iconService.getAccountIcon(type);
+            };
+
+        }
+    };
+})
+
+.directive('accountCurrencySelect', function($ionicModal, accountService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<label class="item item-input">' +
+                       '<input type="text" ng-model="value.name" placeholder="Валюта счета" required ng-click="open()"">' +
+                   '</label>',
+        scope   : {
+            value: "=value"
+        },
+        link: function($scope, element, attrs) {
+            $scope.title = 'Валюта счета';
+
+            $ionicModal.fromTemplateUrl("templates/typeRecordSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                accountService.getCurrencyList().then(function(data) {
+                    $scope.recordList = data;
+                });
+
+                if (isPull) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.$apply();
+                }
+            };
+
+            $scope.select = function(type) {
+                $scope.value = type;
+                $scope.close();
+            }
+
+            $scope.getColor = function(type) {
+                return "#153043";
             };
 
             $scope.getIcon = function(type) {

@@ -256,12 +256,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.save = function(account) {
-        var data = {
-            id  : account.id,
-            name: account.name
-        }
-
-        accountService.update(data).then(function(data) {
+        accountService.update(account).then(function(data) {
             $scope.modal.hide();
             $scope.doRefresh(false);
         });

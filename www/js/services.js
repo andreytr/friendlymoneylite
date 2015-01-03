@@ -65,6 +65,12 @@ angular.module('fm.services', [])
              .then(function(result) {
                  return result.data;
              });
+        },
+        update: function(account) {
+            return $http.post(mainUrl + "account/update", account)
+            .success(function(result) {
+                return result;
+            });
         }
    }
 })
