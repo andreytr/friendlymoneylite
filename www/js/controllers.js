@@ -35,7 +35,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('RegistrationCtrl', function($scope, $state, $ionicPopup, $cookieStore, userService) {
+.controller('RegistrationCtrl', function($scope, $state, $ionicPopup, userService) {
     $scope.user = {
         username: '',
         password: '',

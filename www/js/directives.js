@@ -59,8 +59,9 @@ angular.module('fm.directives', [])
     return {
         restrict: 'E',
         replace : true,
-        template: '<label class="item item-input">' +
-                       '<input type="text" ng-model="value.name" placeholder="Тип счета" required ng-click="open()"">' +
+        template: '<label class="item item-input item-select-list item-icon-right" ng-click="open()">' +
+                       '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
                    '</label>',
         scope   : {
             value: "=value"
@@ -117,8 +118,9 @@ angular.module('fm.directives', [])
     return {
         restrict: 'E',
         replace : true,
-        template: '<label class="item item-input">' +
-                       '<input type="text" ng-model="value.name" placeholder="Валюта счета" required ng-click="open()"">' +
+        template: '<label class="item item-input item-select-list item-icon-right" ng-click="open()">' +
+                       '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
                    '</label>',
         scope   : {
             value: "=value"
@@ -164,7 +166,7 @@ angular.module('fm.directives', [])
             };
 
             $scope.getIcon = function(type) {
-                return iconService.getAccountIcon(type);
+                return iconService.getCurrencyIcon(type.type);
             };
 
         }

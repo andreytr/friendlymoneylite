@@ -192,6 +192,29 @@ angular.module('fm.services', [])
                  }
              }
              return '#00b9f2';
+        },
+
+        getCurrencyIcon: function(type) {
+            if (type == 'RUB') {
+                return 'fa fa-rub';
+            }
+            if (type == 'USD') {
+                return 'fa fa-usd';
+            }
+            if (type == 'EUR') {
+                return 'fa fa-eur';
+            }
+            if (type == 'CNY') {
+                return 'fa fa-cny';
+            }
+            if (type == 'JPY') {
+                return 'fa fa-jpy';
+            }
+            if (type == 'GBP') {
+                return 'fa fa-gbp';
+            }
+
+            return type ? 'currency-' + type.toLowerCase() : 'ion-help';
         }
    }
 });
