@@ -1,12 +1,19 @@
 <ion-view view-title="Учреждения">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-plus-round" ng-click="add()">
+        </button>
+    </ion-nav-buttons>
+
     <ion-content>
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
 
         <div class="list content-list">
-            <a class="item item-icon-left" ng-repeat="shop in shopList" href="#/app/shops/{{shop.id}}">
-                <i class="icon circle {{shop.category.icon}}" style="background-color: {{shop.category.color}} "></i>
+            <a class="item item-icon-left" ng-repeat="shop in shopList" ng-click="edit(shop)" on-hold="showMenu(shop)">
+                <i class="icon circle {{getIcon(shop.defaultCategory)}}" style="background-color: {{getColor(shop.defaultCategory)}}"></i>
                 <div class="content-item two-line-item">
-                    <h2>{{shop.name}}</h2>
-                    <p>{{shop.category.name}}</p>
+                    <h2>{{shop.title}}</h2>
+                    <p>{{shop.defaultCategory.name}}</p>
                 </div>
             </a>
         </div>

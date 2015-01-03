@@ -100,6 +100,30 @@ angular.module('fm.services', [])
    }
 })
 
+.factory('shopService', function($http) {
+
+   return {
+        getList: function() {
+             return $http.post(mainUrl + "shop/list", {})
+             .success(function(result) {
+                 return result;
+             });
+        },
+        update: function(record) {
+            return $http.post(mainUrl + "shop/update", record)
+            .success(function(result) {
+                return result;
+            });
+        },
+        remove: function(id) {
+            return $http.post(mainUrl + "shop/delete/" + id)
+            .success(function(result) {
+                return result;
+            });
+        }
+   }
+})
+
 .factory('operationService', function($http) {
 
    return {
@@ -221,6 +245,10 @@ angular.module('fm.services', [])
             }
 
             return type ? 'currency-' + type.toLowerCase() : 'ion-help';
+        },
+
+        getCategoryIcon: function(iconName) {
+            return 'ion-help';
         }
    }
 });

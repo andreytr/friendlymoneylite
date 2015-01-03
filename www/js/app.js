@@ -148,16 +148,6 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
         }
     })
 
-    .state('app.shop', {
-        url: "/shops/:shopId",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/shop.html",
-                controller: 'ShopCtrl'
-            }
-        }
-    })
-
     .state('app.reports', {
         url: "/reports",
         views: {

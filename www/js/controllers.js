@@ -362,39 +362,86 @@ $scope.showMenu = function(account) {
 
 
 
-.controller('ShopListCtrl', function($scope, $stateParams) {
-    $scope.shopList = [{
-        id  : 1,
-        name: 'Перекресток',
-        category: {
-            icon: 'ion-locked',
-            color: '#B6936C',
-            name : 'Продукты'
+.controller('ShopListCtrl', function($scope, $ionicActionSheet, $ionicModal, shopService, iconService) {
+
+    $scope.showMenu = function(shop) {
+        var hideSheet = $ionicActionSheet.show({
+            destructiveText: 'Удалить',
+            cancelText: 'Отмена',
+            destructiveButtonClicked: function() {
+                $scope.remove(shop);
+                hideSheet();
+            }
+        });
+    };
+
+    $scope.getIcon = function(category) {
+        if (category) {
+            return iconService.getCategoryIcon(category.icon);
         }
-    }, {
-        id  : 2,
-        name: 'Матрица',
-        category: {
-            icon: 'ion-locked',
-            color: '#B6936C',
-            name : 'Продукты'
+        return 'ion-help';
+    };
+
+    $scope.getColor = function(category) {
+        if (category) {
+            return category.color;
         }
-    }, {
-        id  : 3,
-        name: 'Apple',
-        category: {
-            icon: 'ion-email',
-            color: '#91B66C',
-            name : 'Музыка'
+        return '#ffffff';
+    };
+
+    $scope.doRefresh = function(isPull) {
+        shopService.getList().then(function(data) {
+            $scope.shopList = data.data;
+        });
+
+        if (isPull) {
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
         }
-    }];
+    };
+
+    $scope.doRefresh(false);
+
+
+    $ionicModal.fromTemplateUrl('templates/shopEdit.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal
+    })
+
+    $scope.add = function() {
+        $scope.shop = {};
+        $scope.modal.show();
+    }
+
+    $scope.edit = function(shop) {
+        $scope.shop = shop;
+        $scope.modal.show();
+    }
+
+    $scope.closeForm = function() {
+        $scope.modal.hide();
+    };
+
+    $scope.save = function(shop) {
+        shopService.update(shop).then(function(data) {
+            $scope.modal.hide();
+            $scope.doRefresh(false);
+        });
+    };
+
+    $scope.remove = function(shop) {
+        accountService.remove(shop.id).then(function(data) {
+            $scope.doRefresh(false);
+        });
+    }
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+
 })
-
-
-.controller('ShopCtrl', function($scope, $stateParams) {
-
-})
-
 
 
 .controller('ReportListCtrl', function($scope, $stateParams, reportService) {
