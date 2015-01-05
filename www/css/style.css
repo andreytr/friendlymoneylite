@@ -25,6 +25,11 @@ body input {
     color: white;
 }
 
+.right-buttons {
+    width: 90px;
+    text-align: right;
+}
+
 .pane, .scroll-content {
     background-color: #1B3B53;
 }
@@ -54,6 +59,8 @@ body input {
         color: #02d0ff;
         position: initial;
         font-weight: normal;
+        width: 100%;
+        text-align: left;
     }
 
 .menu .has-header {
@@ -249,6 +256,7 @@ body input {
 
 .item.item-select-list p {
     color: white;
+    width: 100%;    /* full hd fix */
 }
 
 .item.item-select-list p.empty {
