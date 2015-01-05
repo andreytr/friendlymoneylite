@@ -1,0 +1,45 @@
+<script type="text/ng-template"  id="categoryChildItem.html">
+    <a class="item item-icon-left" ng-click="select(category)" ng-if="category.id != excludeId" ng-class="{'selected-value': value.id == category.id}">
+        <i class="icon circle {{getIcon(category)}}" style="background-color: {{category.color}}"></i>
+        <div class="content-item one-line-item wrap">
+            <h2><span>{{category.name}}</span></h2>
+        </div>
+    </a>
+    <div ng-repeat="category in category.childCategoryList | filter : {type : tab}" ng-include="'categoryChildItem.html'" ng-init="t = t + 1" class="padding-left-{{t}}" ng-if="category.id != excludeId && t < maxLevel">
+
+    </div>
+</script>
+
+
+<div class="modal">
+    <ion-header-bar class="bar-positive" align-title="center">
+        <div class="buttons">
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="close()"></button>
+        </div>
+       <h1 class="title">{{title}}</h1>
+    </ion-header-bar>
+
+
+    <div class="tabs-top" ng-if="type == null">
+        <div class="tabs">
+            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">
+                Расход
+            </a>
+            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}">
+                Доход
+            </a>
+        </div>
+    </div>
+
+    <ion-content ng-class="{'has-tabs-top': type == null}">
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div class="list content-list">
+            <div ng-repeat="category in categoryList | filter : {type : tab}" ng-include="'categoryChildItem.html'" ng-init="t = 0" ng-if="category.id != excludeId">
+            </div>
+
+        </div>
+
+    </ion-content>
+</div>

@@ -425,14 +425,23 @@ $scope.showMenu = function(account) {
     };
 
     $scope.save = function(shop) {
-        shopService.update(shop).then(function(data) {
+        var record = {
+            id: shop.id,
+            name: shop.name,
+            title: shop.title,
+            defaultCategory: {
+                id: shop.defaultCategory.id,
+                name: shop.defaultCategory.name,
+            }
+        }
+        shopService.update(record).then(function(data) {
             $scope.modal.hide();
             $scope.doRefresh(false);
         });
     };
 
     $scope.remove = function(shop) {
-        accountService.remove(shop.id).then(function(data) {
+        shopService.remove(shop.id).then(function(data) {
             $scope.doRefresh(false);
         });
     }

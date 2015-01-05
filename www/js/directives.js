@@ -1,17 +1,22 @@
 angular.module('fm.directives', [])
 
-.directive('categoryParentSelect', function($ionicModal, $filter, categoryService){
+.directive('categorySelect', function($ionicModal, $ionicScrollDelegate, categoryService){
     return {
         restrict: 'E',
         replace : true,
-        template: '<a ng-click="open()">parent - {{value}}</a>',
+        template: '<label class="item item-input item-select-list item-icon-right" ng-click="open()">' +
+                       '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
+                   '</label>',
         scope   : {
             value: "=value",
             type: "=type",
-            excludeId: "=excludeId"
+            excludeId: "=excludeId",
+            title: "=title",
+            maxLevel: "=maxLevel"
         },
         link: function($scope, element, attrs) {
-            $ionicModal.fromTemplateUrl("templates/categoryParentSelect.html", {
+            $ionicModal.fromTemplateUrl("templates/categorySelect.html", {
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
@@ -34,9 +39,6 @@ angular.module('fm.directives', [])
 
             $scope.doRefresh = function(isPull) {
                 categoryService.getTreeList().then(function(data) {
-                    if (data) {
-                        data = $filter('filter')(data, { type: $scope.type });
-                    }
                     $scope.categoryList = data;
                 });
 
@@ -47,10 +49,17 @@ angular.module('fm.directives', [])
             };
 
             $scope.select = function(category) {
-                $scope.value = category.id;
+                $scope.value = category;
                 $scope.close();
             }
 
+
+            $scope.changeTab = function(tab) {
+                $scope.tab = tab;
+                $ionicScrollDelegate.scrollTop();
+            };
+
+            $scope.changeTab($scope.type || 'OUTCOME');
         }
     };
 })

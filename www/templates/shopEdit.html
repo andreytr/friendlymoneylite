@@ -18,6 +18,10 @@
                 <input type="text" ng-model="shop.name" placeholder="Обозначение при импорте (через ;)" required>
             </label>
 
+            <category-select value="shop.defaultCategory"
+                             title="'Категория по умолчанию'"
+                             max-level="3">
+            </category-select>
         </div>
     </ion-content>
 
