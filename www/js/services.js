@@ -260,10 +260,61 @@ angular.module('fm.services', [])
         var availableNumbers = messagesService.getAvailableNumbers();
         if (availableNumbers && availableNumbers.length > 0) {
             if (availableNumbers.indexOf(data['address']) > -1) {
-                messagesService.onReceiveMessage(data['address'], data['date'], data['body'])
+                messagesService.onReceiveMessage([{
+                    address: data['address'],
+                    date: data['date'],
+                    body: data['body']
+                }])
             }
         }
     });
+
+    var readMessages = function(fromDate) {
+        if (window.SMS === undefined) {
+            return;
+        }
+        var availableNumbers = messagesService.getAvailableNumbers();
+
+        if (availableNumbers && availableNumbers.length > 0) {
+
+            var currentTimeMillis = Date.now();
+            for(var i = 0; i < availableNumbers.length; i++) {
+                var filter = {
+                    box     : 'inbox',
+                    address : availableNumbers[i],
+                    maxCount: 999
+                };
+
+                SMS.listSMS(filter, function(data) {
+                    if (data && data.length > 0) {
+                        var messages = [];
+                        for(var i = 0; i < data.length; i++) {
+                            var date = data[i]['date'];
+                            if (date < 0) {
+                                date += currentTimeMillis;
+                            }
+
+                            if (date < fromDate) {
+                                continue;
+                            }
+
+                            messages.push({
+                                address: data[i]['address'],
+                                date: date,
+                                body: data[i]['body']
+                            });
+                        }
+                        messagesService.onReceiveMessageList(messages);
+                    }
+                }, function(message) {
+                    $ionicPopup.alert({
+                         cssClass: 'error',
+                         template: message
+                    });
+                });
+            }
+        }
+    }
 
     var setEnabled = function(enabled, successCallback, errorCallback) {
          if (window.SMS === undefined) {
@@ -290,7 +341,8 @@ angular.module('fm.services', [])
     });
 
     return {
-        setEnabled: setEnabled
+        setEnabled: setEnabled,
+        readMessages: readMessages
     }
 
 })
@@ -390,14 +442,14 @@ angular.module('fm.services', [])
         for(var i = 0; i < resultList.length; i++) {
             var externalMessageId = resultList[i]['externalMessageId'];
             for(var j = 0; j < messageList.length; j++) {
-                if (messageList[i]['id'] == externalMessageId) {
+                if (messageList[j]['id'] == externalMessageId) {
                     var status = resultList[i].status;
                     if (status == 'ALREADY_EXISTS' || status == 'UNKNOWN_PATTERN') {
                         status = 'SKIPPED';
                     }
 
-                    messageList[i]['status'] = status;
-                    messageList[i]['sent'] = true;
+                    messageList[j]['status'] = status;
+                    messageList[j]['sent'] = true;
                 }
             }
         }
@@ -424,6 +476,29 @@ angular.module('fm.services', [])
             });
         }
     }
+
+    var addMessage = function(message) {
+        for(var i = 0; i < receivedMessages.length; i++) {
+            if (receivedMessages[i]['id'] == message['id']) {
+                receivedMessages[i] = message;
+                return;
+            }
+        }
+        receivedMessages.push(message);
+    }
+
+    var hashCode = function(str) {
+        var hash = 0, i, chr, len;
+        if (str.length == 0) {
+            return hash;
+        }
+        for (i = 0, len = str.length; i < len; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
 
     loadTemplates();
 
@@ -464,21 +539,26 @@ angular.module('fm.services', [])
 
             return result;
         },
-        onReceiveMessage: function(address, timestamp, body) {
-            var message = {
-                id: receivedMessages.length,
-                address: address,
-                timestamp: timestamp,
-                body: body,
+        onReceiveMessageList: function(messageList) {
+            var messageToSend = [];
+            for(var i = 0; i < messageList.length; i++) {
+                var message = {
+                    id          : hashCode(messageList[i]['body']),
+                    address     : messageList[i]['address'],
+                    timestamp   : messageList[i]['date'],
+                    body        : messageList[i]['body'],
 
-                status: 'QUEUE',
-                sent: false,
-                sendCount: 0,
-                errorMessage: null
-            };
+                    status: 'QUEUE',
+                    sent: false,
+                    sendCount: 0,
+                    errorMessage: null
+                };
 
-            receivedMessages.push(message);
-            processMessages([message]);
+                addMessage(message);
+                messageToSend.push(message);
+            }
+
+            processMessages(messageToSend);
         }
     }
 

@@ -608,7 +608,7 @@ $scope.showMenu = function(account) {
 
 })
 
-.controller('MessagesCtrl', function($scope, $ionicScrollDelegate, messagesService, smsService) {
+.controller('MessagesCtrl', function($scope, $ionicModal, $ionicScrollDelegate, messagesService, smsService) {
     $scope.receivedMessages = [];
 
     $scope.doRefresh = function(isPull) {
@@ -634,9 +634,6 @@ $scope.showMenu = function(account) {
 
 
 
-    $scope.readForm = function() {
-    }
-
     $scope.getStatus = function(message) {
         if (message.status == 'QUEUE') {
             return 'В очереди';
@@ -652,6 +649,38 @@ $scope.showMenu = function(account) {
         }
         return message.status || 'Ошибка отправки';
     }
+
+
+
+    $ionicModal.fromTemplateUrl('templates/messagesReadForm.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.readFormModal = modal
+    })
+
+    $scope.showReadForm = function() {
+        $scope.readForm = {
+            fromDate: null
+        }
+        $scope.readFormModal.show();
+    }
+
+    $scope.closeReadForm = function() {
+        $scope.readFormModal.hide();
+    };
+
+    $scope.readMessages = function() {
+        if ($scope.readForm.fromDate) {
+            smsService.readMessages($scope.readForm.fromDate);
+        }
+        $scope.readFormModal.hide();
+        $scope.doRefresh(false);
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.readFormModal.remove();
+    });
 });
 
 

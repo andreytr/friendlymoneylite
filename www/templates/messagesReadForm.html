@@ -1,0 +1,18 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive" align-title="center">
+        <div class="buttons">
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="closeReadForm()"></button>
+        </div>
+        <h1 class="title">Перечитать CMC повторно</h1>
+        <div class="buttons">
+            <button class="button-icon icon ion-checkmark-round" ng-click="readMessages()"></button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content>
+        <div class="list padding-left-30 padding-right-30 padding-top-30">
+            <date-picker title="'Начиная с даты'" value="readForm.fromDate"></date-picker>
+        </div>
+    </ion-content>
+
+</div>

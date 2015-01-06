@@ -349,6 +349,10 @@ body input {
     text-align: center;
 }
 
+.popup input {
+    color: black !important;
+}
+
 
 
 
