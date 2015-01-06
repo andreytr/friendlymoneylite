@@ -1,0 +1,63 @@
+<ion-view view-title="Обработанные SMS">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-refresh" ng-click="readForm()">
+        </button>
+    </ion-nav-buttons>
+
+    <div class="tabs-top">
+        <div class="tabs">
+            <a class="tab-item" ng-click="changeTab('history')" ng-class="{active: tab == 'history'}">
+                История
+            </a>
+            <a class="tab-item" ng-click="changeTab('statistics')"  ng-class="{active: tab == 'statistics'}">
+                Статистика
+            </a>
+        </div>
+    </div>
+
+    <ion-content class="has-tabs-top">
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
+
+        <div ng-if="tab == 'statistics'" class="statistics">
+            <p class="padding">Мониторинг SMS оповещений с номеров:<br/> <strong>{{availableNumbers.join(', ')}}</strong></p>
+
+            <div class="row">
+                <div class="col label col-75"><p>Всего сообщений</p></div>
+                <div class="col"><p><strong>{{stat['count']}}</strong></p></div>
+            </div>
+            <div class="row">
+                <div class="col label col-75"><p>В очереди на обработку</p></div>
+                <div class="col queue"><p><strong>{{stat.queueCount}}</strong></p></div>
+            </div>
+            <div class="row">
+                <div class="col label col-75"><p>Создано операций</p></div>
+                <div class="col created_operations"><p><strong>{{stat.operationCount}}</strong></p></div>
+            </div>
+            <div class="row">
+                <div class="col label col-75"><p>Пропущено</p></div>
+                <div class="col skipped"><p><strong>{{stat.skipCount}}</strong></p></div>
+            </div>
+            <div class="row">
+                <div class="col label col-75"><p>Произошла ошибка</p></div>
+                <div class="col exception"><p><strong>{{stat.errorCount}}</strong></p></div>
+            </div>
+        </div>
+
+        <div class="list content-list" ng-if="tab == 'history'">
+            <a class="item auto-height message" ng-repeat="message in receivedMessages.slice().reverse()" ng-click="click(message)" on-hold="showMenu(message)">
+                <div class="content-item wrap">
+                    <div class="row">
+                        <div class="col number"><p>{{message.address}}</p><p>{{message.timestamp | date:'yyyy-MM-dd HH:mm'}}</p></div>
+                        <div class="col status {{message.status ? message.status.toLowerCase() : ''}}"><p>{{getStatus(message)}}</p></div>
+                    </div>
+
+                    <div>
+                        <p>{{message.from}} {{message.body}}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </ion-content>
+
+</ion-view>

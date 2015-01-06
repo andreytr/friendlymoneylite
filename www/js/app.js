@@ -71,7 +71,7 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
             'responseError': function(rejection) {
                 $rootScope.$broadcast('loading:hide')
                 if (rejection.status == 0) {
-                    $rootScope.$broadcast('loading:showError', 'Сервер не доступен');
+                    $rootScope.$broadcast('loading:showError', 'Сервер временно не доступен');
                 }
                 return $q.reject(rejection);
             }
@@ -174,6 +174,16 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
             'menuContent': {
                 templateUrl: "templates/reportFilter.html",
                 controller: 'ReportFilterCtrl'
+            }
+        }
+    })
+
+    .state('app.messages', {
+        url: "/messages",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/messages.html",
+                controller: 'MessagesCtrl'
             }
         }
     });

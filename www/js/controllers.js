@@ -606,6 +606,52 @@ $scope.showMenu = function(account) {
         $state.go('app.report', {reportName: $scope.reportName, refresh: true});
     }
 
+})
+
+.controller('MessagesCtrl', function($scope, $ionicScrollDelegate, messagesService, smsService) {
+    $scope.receivedMessages = [];
+
+    $scope.doRefresh = function(isPull) {
+        messagesService.loadTemplates(function() {
+            $scope.availableNumbers = messagesService.getAvailableNumbers();
+            $scope.stat = messagesService.getMessageStats();
+            $scope.receivedMessages = messagesService.getReceivedMessages();
+        });
+
+        if (isPull) {
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$apply();
+        }
+    };
+
+    $scope.changeTab = function(tab) {
+        $scope.tab = tab;
+        $ionicScrollDelegate.scrollTop();
+    };
+
+    $scope.changeTab('history');
+    $scope.doRefresh(false);
+
+
+
+    $scope.readForm = function() {
+    }
+
+    $scope.getStatus = function(message) {
+        if (message.status == 'QUEUE') {
+            return 'В очереди';
+        }
+        if (message.status == 'CREATED_OPERATIONS') {
+            return 'Создана операция';
+        }
+        if (message.status == 'SKIPPED') {
+            return 'Пропущено';
+        }
+        if (message.status == 'EXCEPTION') {
+            return 'Ошибка';
+        }
+        return message.status || 'Ошибка отправки';
+    }
 });
 
 

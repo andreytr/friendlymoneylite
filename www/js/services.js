@@ -251,5 +251,236 @@ angular.module('fm.services', [])
             return 'ion-help';
         }
    }
+})
+
+.factory('smsService', function($ionicPopup, messagesService) {
+
+    document.addEventListener('onSMSArrive', function(e) {
+        var data = e.data;
+        var availableNumbers = messagesService.getAvailableNumbers();
+        if (availableNumbers && availableNumbers.length > 0) {
+            if (availableNumbers.indexOf(data['address']) > -1) {
+                messagesService.onReceiveMessage(data['address'], data['date'], data['body'])
+            }
+        }
+    });
+
+    var setEnabled = function(enabled, successCallback, errorCallback) {
+         if (window.SMS === undefined) {
+             return;
+         }
+
+         if (enabled) {
+             SMS.startWatch(successCallback, errorCallback);
+         }
+         else {
+             SMS.stopWatch(successCallback, errorCallback);
+         }
+    }
+
+    setEnabled(true, function() {
+        $ionicPopup.alert({
+             template: 'SMS включено'
+        });
+    }, function() {
+        $ionicPopup.alert({
+             cssClass: 'error',
+             template: 'Не удалось включить мониторинг SMS оповещений от банков'
+        });
+    });
+
+    return {
+        setEnabled: setEnabled
+    }
+
+})
+
+.factory('messagesService', function($http) {
+    var templates = [];
+    var availableNumbers = [];
+    var receivedMessages = [];
+
+    var loadTemplates = function(callback, scope) {
+         $http.post(mainUrl + "message/availableNumber", {})
+         .success(function(result) {
+             return result;
+         })
+         .then(function(data) {
+             templates = data.data;
+
+             availableNumbers = [];
+             for(var i = 0; i < templates.length; i++) {
+                 var number = templates[i]['phoneNumber'];
+                 if (number && availableNumbers.indexOf(number) < 0) {
+                     availableNumbers.push(number);
+                 }
+             }
+
+             if (callback) {
+                callback.call(scope || this);
+             }
+         });
+    }
+
+    var getVarList = function(body) {
+        var re = new RegExp('\\[(.+?)\\]', 'g');
+        var varList = body.match(re);
+        if (varList && varList.length > 0) {
+            for(var i = 0; i < varList.length; i++) {
+                varList[i] = varList[i].replace('[', '');
+                varList[i] = varList[i].replace(']', '');
+            }
+        }
+
+        return varList;
+    }
+
+    var  replaceVarInTpl = function(tpl, varList) {
+        for(var i = 0; i < varList.length; i++) {
+            var v = varList[i];
+            tpl = tpl.replace('[' + v + ']', v == 'NUMBER' ? '(\\d+?)' : '(.+?)');
+        }
+        return tpl;
+    }
+
+    var parseMessage = function(address, body, timestamp, messageId) {
+        for(var i = 0; i < templates.length; i++) {
+            var t = templates[i];
+            if (t['phoneNumber'] != address) {
+                continue;
+            }
+
+            var varList = getVarList(t['bodyTemplate']);
+            var tpl = replaceVarInTpl(t['bodyTemplate'], varList);
+
+            var re = new RegExp(tpl);
+            if (!re.test(body)) {
+                continue;
+            }
+
+            var dataList = re.exec(body);
+            if (dataList.length > varList.length) {
+                var data = {};
+                for(var j = 0; j < varList.length; j++) {
+                    data[varList[j]] = dataList[j + 1];
+                }
+
+                return {
+                    id: messageId,
+                    date: timestamp,
+                    templateId: t['templateId'],
+                    messageData: data
+                };
+            }
+        }
+        return null;
+    }
+
+    var sendDataToServer = function(messageDataList) {
+        return $http.post(mainUrl + "message/process", {
+                source: 'ANDROID_SMS',
+                messageDataList: messageDataList
+             })
+             .success(function(result) {
+                 return result;
+             });
+    }
+
+    var applyProcessResult = function(messageList, resultList) {
+        for(var i = 0; i < resultList.length; i++) {
+            var externalMessageId = resultList[i]['externalMessageId'];
+            for(var j = 0; j < messageList.length; j++) {
+                if (messageList[i]['id'] == externalMessageId) {
+                    var status = resultList[i].status;
+                    if (status == 'ALREADY_EXISTS' || status == 'UNKNOWN_PATTERN') {
+                        status = 'SKIPPED';
+                    }
+
+                    messageList[i]['status'] = status;
+                    messageList[i]['sent'] = true;
+                }
+            }
+        }
+    };
+
+    var processMessages = function(messageList) {
+        var messageDataList = [];
+
+        for(var i = 0; i < messageList.length; i++) {
+            var message = messageList[i];
+            var result = parseMessage(message['address'], message['body'], message['timestamp'], message['id']);
+            if (!result) {
+                message['status'] = 'SKIPPED';
+            }
+            else {
+                message['sendCount']++;
+                messageDataList.push(result);
+            }
+        }
+
+        if (messageDataList.length > 0) {
+            sendDataToServer(messageDataList).then(function(data) {
+                applyProcessResult(messageList, data.data);
+            });
+        }
+    }
+
+    loadTemplates();
+
+    return {
+        loadTemplates: loadTemplates,
+        getAvailableNumbers: function() {
+            return availableNumbers;
+        },
+        getReceivedMessages: function() {
+            return receivedMessages;
+        },
+        getMessageStats: function() {
+            var result = {
+                count: 0,
+                queueCount: 0,
+                operationCount: 0,
+                skipCount: 0,
+                errorCount: 0
+            };
+
+            for(var i = 0; i < receivedMessages.length; i++) {
+                result.count++;
+
+                var m = receivedMessages[i];
+                if (m.status == 'QUEUE') {
+                    result.queueCount++;
+                }
+                else if (m.status == 'CREATED_OPERATIONS') {
+                    result.operationCount++;
+                }
+                else if (m.status == 'SKIPPED') {
+                    result.skipCount++;
+                }
+                else if (m.status == 'EXCEPTION') {
+                    result.errorCount++;
+                }
+            }
+
+            return result;
+        },
+        onReceiveMessage: function(address, timestamp, body) {
+            var message = {
+                id: receivedMessages.length,
+                address: address,
+                timestamp: timestamp,
+                body: body,
+
+                status: 'QUEUE',
+                sent: false,
+                sendCount: 0,
+                errorMessage: null
+            };
+
+            receivedMessages.push(message);
+            processMessages([message]);
+        }
+    }
+
 });
 

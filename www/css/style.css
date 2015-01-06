@@ -159,6 +159,10 @@ body input {
     padding-right: 0px;
 }
 
+.content-list a.item.auto-height {
+    height: auto;
+}
+
     .item-icon-left .icon.circle {
         min-width: 46px;
         min-height: 46px;
@@ -186,6 +190,10 @@ body input {
         }
 
         .content-item.wrap h2 {
+            white-space: normal;
+        }
+
+        .content-item.wrap p {
             white-space: normal;
         }
 
@@ -399,6 +407,58 @@ body input {
     width: 100%;
 }
 
+
+/**
+ * Messages
+ */
+.content-list a.item.message {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    margin-bottom: 5px;
+}
+
+.content-list .message .row,
+.content-list .message .col {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.message .content-item {
+    padding-bottom: 7px;
+}
+
+.message .number {
+    font-weight: bold;
+}
+
+.message .status {
+    text-align: right;
+    font-weight: bold;
+}
+
+.statistics .label {
+    max-width: 250px;
+    padding: 0px 5px;
+}
+
+
+.statistics .created_operations,
+.message .created_operations p,
+.statistics .queue,
+.message .queue p {
+    color: #02d0ff;
+}
+
+.statistics .exception,
+.message .exception p {
+    color: #fa5654;
+}
+
+.statistics .skipped,
+.message .skipped p {
+    color: #b6ad6c;
+}
 
 
 /**
