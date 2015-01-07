@@ -13,7 +13,7 @@
             <div ac-chart="chartType" ac-data="chartData" ac-config="chartConfig" id='chart' class="chart padding"></div>
 
             <div class="list content-list legend">
-                <a class="item item-icon-left" ng-repeat="item in legendData">
+                <a class="item item-icon-left" ng-repeat="item in legendData" ng-class="{'selected-value': item.selected}">
                     <i class="icon circle {{item.icon}}" style="background-color: {{item.color}}"></i>
                     <div class="content-item wrap one-line-item item-amount">
                         <h2><span>{{item.title}}</span></h2>

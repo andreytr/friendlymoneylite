@@ -534,8 +534,12 @@ $scope.showMenu = function(account) {
         lineLegend: 'traditional',
         lineCurveType: 'cardinal',
         xAxisMaxTicks: 5,
-        click: function() {
-            console.info(arguments);
+        click: function(chartItem, event) {
+            if (arguments.length < 2 || !chartItem) {
+                return;
+            }
+
+            $scope.onChartItemClick(chartItem.data.x);
         },
         colors: chartColors
     };
@@ -551,6 +555,12 @@ $scope.showMenu = function(account) {
         index = index % chartColors.length;
         return chartColors[index];
     }
+
+    $scope.onChartItemClick = function(title) {
+        for(var i = 0; i < $scope.legendData.length; i++) {
+            $scope.legendData[i]['selected'] = ($scope.legendData[i]['title'] == title)
+        }
+    };
 
     $scope.getChartType = function(type) {
         if (type == 'LINE') {
