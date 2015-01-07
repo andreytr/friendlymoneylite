@@ -2,10 +2,10 @@
 <widget id="com.ionicframework.friendlymoneylite719929" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>FriendlyMoneyLite</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Client for friendly-money.com
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="admin@friendly-money.com" href="http://friendly-money.com/">
+      Friendly Soft Team
     </author>
   <content src="index.html"/>
   <access origin="*"/>
