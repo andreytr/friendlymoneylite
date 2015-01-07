@@ -481,14 +481,13 @@ $scope.showMenu = function(account) {
 
     $scope.changeTab = function(tab) {
         $scope.tab = tab;
-        $scope.reportList = tab == 'common' ? $scope.commonReportList : $scope.userReportList;
     };
 
     $scope.changeTab('common');
     $scope.doRefresh(false);
 })
 
-.controller('ReportCtrl', function($scope, $state, $stateParams, reportService) {
+.controller('ReportCtrl', function($scope, $state, $stateParams, $ionicModal, reportService) {
 
     var chartColors = ['#b66b80',
                        '#6c75b6',
@@ -712,20 +711,37 @@ $scope.showMenu = function(account) {
 
     $scope.doRefresh(false);
 
+    $scope.getCurrentFilter = function(report) {
+        if ($scope.filter) {
+            return $scope.filter;
+        }
+        return {};
+    }
+
+    $ionicModal.fromTemplateUrl('templates/reportFilter.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.filterModal = modal
+    })
+
     $scope.goToFilter = function(report) {
-        $state.go('app.reportFilter', {reportName: report.name});
+        $scope.filter = $scope.getCurrentFilter(report);
+        $scope.filterModal.show();
     }
-})
 
-.controller('ReportFilterCtrl', function($scope, $state, $stateParams, reportService) {
+    $scope.closeForm = function() {
+        $scope.filterModal.hide();
+    };
 
-    $scope.reportName = $stateParams['reportName'];
-    $scope.filter = reportService.getDataFilter();
+    $scope.apply = function(account) {
+        $scope.filterModal.hide();
+        $scope.doRefresh(false);
+    };
 
-    $scope.save = function() {
-        reportService.setDataFilter($scope.filter);
-        $state.go('app.report', {reportName: $scope.reportName, refresh: true});
-    }
+    $scope.$on('$destroy', function() {
+        $scope.filterModal.remove();
+    });
 
 })
 

@@ -137,10 +137,9 @@ angular.module('fm.services', [])
 })
 
 
-.factory('reportService', function($http) {
+.factory('reportService', function($http, $filter) {
 
     var reportList = [];
-    var dataFilter = {};
 
     var loadReportList = function() {
         return $http.get(mainUrl + "report/list")
@@ -162,20 +161,19 @@ angular.module('fm.services', [])
         return null;
     }
 
-    var getDataFilter = function() {
-        return dataFilter;
-    }
-
-    var setDataFilter = function(filter) {
-        dataFilter = filter;
-    }
-
     return {
         getList: loadReportList,
         getReportByName: getReportByName,
-        setDataFilter: setDataFilter,
-        getDataFilter: getDataFilter,
-        getData: function(reportName) {
+        getData: function(reportName, filter) {
+            var dataFilter = filter;
+            if (dataFilter['fromDate']) {
+                dataFilter['fromDate'] = $filter('date')(dataFilter['fromDate'], "yyyy-MM-dd");
+            }
+            if (dataFilter['toDate']) {
+                dataFilter['toDate'] = $filter('date')(dataFilter['toDate'], "yyyy-MM-dd");
+            }
+
+
             return $http.post(mainUrl + "report/data?reportName=" + reportName, dataFilter)
              .success(function(result) {
                  return result;

@@ -1,22 +1,20 @@
 <div class="modal">
     <ion-header-bar class="bar-positive" align-title="center">
         <div class="buttons">
-            <button class="button-icon icon ion-ios7-arrow-back" ng-click="close()"></button>
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="closeForm()"></button>
         </div>
         <h1 class="title">Задайте фильтр</h1>
         <div class="buttons">
-            <button class="button-icon icon ion-checkmark-round" ng-click="saveFilter(filter)"></button>
+            <button class="button-icon icon ion-checkmark-round" ng-click="apply()"></button>
         </div>
     </ion-header-bar>
 
     <ion-content>
         <div class="list padding-left-30 padding-right-30 padding-top-30">
-            <label class="item item-input">
-                <input type="text" ng-model="filter.fromDate" placeholder="Начиная с даты" required value="{{value}}">
-            </label>
-            <label class="item item-input">
-                <input type="text" ng-model="filter.toDate" placeholder="Заканчивая датой" required>
-            </label>
+
+            <date-picker title="'Начиная с даты'" value="filter.fromDate"></date-picker>
+            <date-picker title="'Заканчивая датой'" value="filter.toDate"></date-picker>
+
             <label class="item item-input">
                 <input type="text" ng-model="filter.accountList" placeholder="Все счета" required>
             </label>
@@ -26,6 +24,7 @@
             <label class="item item-input">
                 <input type="text" ng-model="filter.shopList" placeholder="Все учреждения" required>
             </label>
+
         </div>
     </ion-content>
 

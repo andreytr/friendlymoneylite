@@ -168,16 +168,6 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
         }
     })
 
-    .state('app.reportFilter', {
-        url: "/reportFilter/:reportName",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/reportFilter.html",
-                controller: 'ReportFilterCtrl'
-            }
-        }
-    })
-
     .state('app.messages', {
         url: "/messages",
         views: {
