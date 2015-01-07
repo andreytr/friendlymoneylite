@@ -354,6 +354,14 @@ body input {
 }
 
 
+/**
+ * Common design
+ */
+.empty-screen {
+    text-align: center;
+    font-size: 18px;
+    padding-top: 60px;
+}
 
 
 /**
@@ -409,6 +417,18 @@ body input {
 .chart {
     height: 400px;
     width: 100%;
+}
+
+.chart .tick {
+    fill: white;
+}
+
+.chart .angular-charts-template .axis path {
+    stroke: white;
+}
+
+.legend {
+    padding-top: 30px;
 }
 
 

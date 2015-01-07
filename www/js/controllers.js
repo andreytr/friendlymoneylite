@@ -490,6 +490,37 @@ $scope.showMenu = function(account) {
 
 .controller('ReportCtrl', function($scope, $state, $stateParams, reportService) {
 
+    var chartColors = ['#b66b80',
+                       '#6c75b6',
+                       '#6da6b7',
+                       '#6cb6a5',
+                       '#6c8db6',
+                       '#6cb57d',
+                       '#b76caf',
+                       '#9a6cb5',
+                       '#b66c6d',
+                       '#b69f6d',
+                       '#6cb3b7',
+                       '#b6786d',
+                       '#aab66c',
+                       '#b78a6d',
+                       '#6c98b5',
+                       '#6cb3b7',
+                       '#80b66b',
+                       '#b2b66c',
+                       '#6db5b1',
+                       '#b5926c',
+                       '#b76b6b',
+                       '#b6956c',
+                       '#b7796c',
+                       '#6c98b5',
+                       '#b7b56b',
+                       '#6cacb6',
+                       '#9ab66c',
+                       '#6fb56c',
+                       '#b36b6c'];
+
+    $scope.legendData = [];
     $scope.chartType = 'line';
     $scope.chartData = null;
     $scope.chartConfig = {
@@ -505,7 +536,8 @@ $scope.showMenu = function(account) {
         xAxisMaxTicks: 5,
         click: function() {
             console.info(arguments);
-        }
+        },
+        colors: chartColors
     };
 
     $scope.report = reportService.getReportByName($stateParams['reportName']);
@@ -514,6 +546,11 @@ $scope.showMenu = function(account) {
     }
 
     $scope.filter = {};
+
+    $scope.getColor = function(index) {
+        index = index % chartColors.length;
+        return chartColors[index];
+    }
 
     $scope.getChartType = function(type) {
         if (type == 'LINE') {
@@ -526,6 +563,79 @@ $scope.showMenu = function(account) {
             return 'pie';
         }
         return null;
+    }
+
+    $scope.getLegendData = function(type, data) {
+        var result = [];
+
+        if (type == 'LINE') {
+            for(var i = 0; i < data.length; i++) {
+                    result.push({
+                        color: $scope.getColor(i),
+                        icon: null,
+                    title: data[i]['name'],
+                    value: null
+                });
+            }
+        }
+        else if (type == 'DONUT') {
+            for(var i = 0; i < data.length; i++) {
+                var seriesName = data[i]['name'];
+                var values = data[i]['values'];
+                if (values) {
+                    for(var name in values) {
+                        if (!values.hasOwnProperty(name)) {
+                            continue;
+                        }
+                        result.push({
+                            color: $scope.getColor(result.length),
+                            icon: null,
+                            title: name,
+                            value: values[name]
+                        });
+                    }
+                }
+            }
+        }
+        else if (type == 'BAR') {
+            var buffer = {};
+            for(var i = 0; i < data.length; i++) {
+                var seriesName = data[i]['name'];
+                var values = data[i]['values'];
+                if (values) {
+                    for(var name in values) {
+                        if (!values.hasOwnProperty(name)) {
+                            continue;
+                        }
+
+                        if (!buffer.hasOwnProperty(name)) {
+                            buffer[name] = [];
+                        }
+
+                        buffer[name].push({
+                            color: $scope.getColor(buffer[name].length),
+                            icon: null,
+                            title: seriesName,
+                            value: values[name]
+                        });
+                    }
+                }
+            }
+
+            for(var name in buffer) {
+                if (!buffer.hasOwnProperty(name)) {
+                    continue;
+                }
+
+                for(var i = 0; i < buffer[name].length; i++) {
+                    var item = buffer[name][i];
+                    item['title'] = name + ' (' + item['title'].toLowerCase() + ')';
+                    result.push(item);
+                }
+            }
+        }
+
+        return result;
     }
 
     $scope.getChartData = function(type, data) {
@@ -581,6 +691,7 @@ $scope.showMenu = function(account) {
         reportService.getData($scope.report.name, $scope.filter).then(function(result) {
             $scope.chartType = $scope.getChartType($scope.report.type);
             $scope.chartData = $scope.getChartData($scope.report.type, result.data);
+            $scope.legendData = $scope.getLegendData($scope.report.type, result.data);
 
             if (isPull) {
                 $scope.$broadcast('scroll.refreshComplete');
