@@ -5,7 +5,7 @@
             <h2><span>{{category.name}}</span></h2>
         </div>
     </a>
-    <div ng-repeat="category in category.childCategoryList | filter : {type : tab}" ng-include="'categoryChildItem.html'" ng-init="t = t + 1" class="padding-left-{{t}}" ng-if="category.id != excludeId && t < maxLevel">
+    <div ng-repeat="category in category.childCategoryList | filter : {type : type}" ng-include="'categoryChildItem.html'" ng-init="t = t + 1" class="padding-left-{{t}}" ng-if="category.id != excludeId && t < maxLevel">
 
     </div>
 </script>
@@ -20,12 +20,12 @@
     </ion-header-bar>
 
 
-    <div class="tabs-top" ng-if="type == null">
+    <div class="tabs-top" ng-if="allowChangeType">
         <div class="tabs">
-            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">
+            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: type == 'OUTCOME'}">
                 Расход
             </a>
-            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}">
+            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: type == 'INCOME'}">
                 Доход
             </a>
         </div>
@@ -36,7 +36,7 @@
         </ion-refresher>
 
         <div class="list content-list">
-            <div ng-repeat="category in categoryList | filter : {type : tab}" ng-include="'categoryChildItem.html'" ng-init="t = 0" ng-if="category.id != excludeId">
+            <div ng-repeat="category in categoryList | filter : {type : type}" ng-include="'categoryChildItem.html'" ng-init="t = 0" ng-if="category.id != excludeId">
             </div>
 
         </div>

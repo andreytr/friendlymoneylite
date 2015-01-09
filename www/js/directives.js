@@ -13,7 +13,8 @@ angular.module('fm.directives', [])
             type: "=type",
             excludeId: "=excludeId",
             title: "=title",
-            maxLevel: "=maxLevel"
+            maxLevel: "=maxLevel",
+            allowChangeType: "=allowChangeType"
         },
         link: function($scope, element, attrs) {
             $ionicModal.fromTemplateUrl("templates/categorySelect.html", {
@@ -25,6 +26,9 @@ angular.module('fm.directives', [])
 
 
             $scope.open = function() {
+                if (!$scope.type) {
+                    $scope.type = 'OUTCOME';
+                }
                 $scope.doRefresh(false);
                 $scope.modal.show();
             };
@@ -55,11 +59,9 @@ angular.module('fm.directives', [])
 
 
             $scope.changeTab = function(tab) {
-                $scope.tab = tab;
+                $scope.type = tab;
                 $ionicScrollDelegate.scrollTop();
             };
-
-            $scope.changeTab($scope.type || 'OUTCOME');
         }
     };
 })

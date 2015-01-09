@@ -108,10 +108,10 @@ body input {
  * Tabs bar
  */
 .has-header.has-tabs-top {
-    top: 106px;
+    top: 100px;
 }
 
-.tabs {
+.tabs, .tabs-striped .tabs {
     height: 60px;
     background-color: #153043;
     border-color: #153043;
@@ -125,9 +125,15 @@ body input {
     max-width: 160px;
 }
 
-.tab-item.active {
+.tab-item.active,
+.tab-item.activated {
     color: #02d0ff;
 }
+
+.tabs-striped .tab-item.tab-item-active, .tabs-striped .tab-item.active, .tabs-striped .tab-item.activated {
+    border-color: #02d0ff;
+}
+
 
 
 /**

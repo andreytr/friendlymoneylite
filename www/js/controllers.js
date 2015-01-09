@@ -157,7 +157,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('OperationsCtrl', function($scope, $filter, iconService, operationService) {
+.controller('OperationsCtrl', function($scope, $filter, $ionicModal, iconService, operationService) {
 
     $scope.getItemHeight = function(operation, index) {
         if ($scope.needShowGroup(operation, $scope.operations[index - 1])) {
@@ -225,6 +225,53 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     $scope.getCurrencyIcon = function(currency) {
         return iconService.getCurrencyIcon(currency.type);
     };
+
+
+    $ionicModal.fromTemplateUrl('templates/operationEdit.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.editModal = modal
+    })
+
+    $scope.add = function() {
+        $scope.operation = {
+            type: 'OUTCOME'
+        };
+        $scope.editModal.show();
+    }
+
+    $scope.edit = function(operation) {
+        $scope.operation = operation;
+        $scope.editModal.show();
+    }
+
+    $scope.closeForm = function() {
+        $scope.editModal.hide();
+    };
+
+    $scope.save = function(operation) {
+        operationService.update(operation).then(function(data) {
+            $scope.editModal.hide();
+            $scope.doRefresh(false);
+        });
+    };
+
+    $scope.remove = function(operation) {
+        accountService.remove(operation.id).then(function(data) {
+            $scope.doRefresh(false);
+        });
+    }
+
+    $scope.$on('$destroy', function() {
+        $scope.editModal.remove();
+    });
+
+
+
+
+
+
 
     $scope.$on('$stateChangeSuccess', function() {
         $scope.doRefresh(false);

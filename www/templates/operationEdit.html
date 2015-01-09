@@ -1,0 +1,47 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive" align-title="center">
+        <div class="buttons">
+            <button class="button-icon icon ion-ios7-arrow-back" ng-click="closeForm()"></button>
+        </div>
+        <h1 class="title">{{operation.id ? 'Редактирование операции': 'Новая операция'}}</h1>
+        <div class="buttons">
+            <button class="button-icon icon ion-checkmark-round" ng-click="save(operation)"></button>
+        </div>
+    </ion-header-bar>
+
+    <div class="tabs-striped tabs-top">
+        <div class="tabs">
+            <a class="tab-item" ng-click="operation.type = 'OUTCOME'" ng-class="{active: operation.type == 'OUTCOME'}">
+                Расход
+            </a>
+            <a class="tab-item" ng-click="operation.type = 'INCOME'"  ng-class="{active: operation.type == 'INCOME'}">
+                Доход
+            </a>
+            <a class="tab-item" ng-click="operation.type = 'TRANSFER'"  ng-class="{active: operation.type == 'TRANSFER'}">
+                Перевод
+            </a>
+        </div>
+    </div>
+
+    <ion-content class="has-tabs-top">
+
+        <div class="list padding-left-30 padding-right-30 padding-top-30">
+            <label class="item item-input">
+                <input type="text" ng-model="account.name" placeholder="Наименование" required>
+            </label>
+
+            <category-select value="operation.category"
+                             type="operation.type"
+                             title="'Категория'"
+                             max-level="3"
+                             allow-change-type="false">
+            </category-select>
+
+            <account-type-select value="account.type"></account-type-select>
+            <account-currency-select value="account.currency"></account-currency-select>
+
+
+        </div>
+    </ion-content>
+
+</div>
