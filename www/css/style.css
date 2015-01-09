@@ -134,6 +134,10 @@ body input {
  * List pages
  */
 
+.collection-item {
+    width: 100%;
+}
+
 .content-list .item, .content-list .item-complex .content-item {
     background-color: #193952;
 }

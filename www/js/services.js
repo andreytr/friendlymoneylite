@@ -127,8 +127,8 @@ angular.module('fm.services', [])
 .factory('operationService', function($http) {
 
    return {
-        getList: function() {
-            return $http.post(mainUrl + "operation/list", {})
+        getList: function(page, count, filter) {
+            return $http.post(mainUrl + "operation/list?page=" + page + "&count=" + count, filter)
             .success(function(result) {
                 return result;
             });

@@ -157,19 +157,52 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('OperationsCtrl', function($scope, $filter, operationService) {
+.controller('OperationsCtrl', function($scope, $filter, iconService, operationService) {
 
-    console.info('open operations');
+    $scope.getItemHeight = function(operation, index) {
+        if ($scope.needShowGroup(operation, $scope.operations[index - 1])) {
+            return  120;
+        }
+        return 76;
+    };
 
-    $scope.load = function() {
-        operationService.getList().then(function(result) {
-            $scope.operations = result.data;
+    $scope.doRefresh = function(isPull) {
+        $scope.operations = [];
+        $scope.loadedPage = 0;
+
+        $scope.load(function() {
+            if (isPull) {
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            }
         });
-    }
+    };
 
-    $scope.onSwipeDown = function() {
-        $scope.load();
-    }
+    $scope.load = function(callback, scope) {
+        var pageSize = 30;
+        var page = $scope.loadedPage + 1;
+
+        operationService.getList(page, pageSize, {}).then(function(result) {
+            $scope.loadedPage = page;
+
+            if (result.data.length > 0) {
+                $scope.operations = $scope.operations.concat(result.data);
+            }
+
+            $scope.moreDataExists = result.data.length > 0 &&
+                                    result.data.length % pageSize == 0
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+
+            if (callback) {
+                callback.call(scope || this);
+            }
+        });
+    };
+
+    $scope.moreDataCanBeLoaded = function() {
+        return $scope.moreDataExists;
+    };
+
 
     $scope.needShowGroup = function(operation, prevOperation) {
         if (prevOperation) {
@@ -189,9 +222,13 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         return null;
     }
 
-    $scope.load();
+    $scope.getCurrencyIcon = function(currency) {
+        return iconService.getCurrencyIcon(currency.type);
+    };
 
-
+    $scope.$on('$stateChangeSuccess', function() {
+        $scope.doRefresh(false);
+    });
 })
 
 .controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService) {

@@ -1,12 +1,23 @@
 <ion-view view-title="История операций">
+    <ion-nav-buttons side="right">
+        <button class="button-icon icon ion-plus-round" ng-click="add()">
+        </button>
+    </ion-nav-buttons>
+
+
     <ion-content>
+        <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
+        </ion-refresher>
 
-        <div class="list content-list" on-swipe-down="onSwipeDown()">
+        <div class="list content-list">
 
-            <div ng-repeat="operation in operations">
+            <div collection-repeat="operation in operations"
+                 collection-item-width="'100%'"
+                 collection-item-height="getItemHeight(operation, $index)"
+                 class="collection-item">
 
 
-                <div class="item item-divider" ng-show="needShowGroup(operation, operations[$index - 1])">
+                <div class="item item-divider" ng-if="needShowGroup(operation, operations[$index - 1])">
                     {{getGroupTitle(operation)}}
                 </div>
 
@@ -18,13 +29,22 @@
                             operation.category.name}}</span></h2>
 
                         <i class="amount" ng-class="{'positive-value': operation.type == 'INCOME', 'negative-value': operation.type == 'OUTCOME'}">
-                            {{operation.type == 'OUTCOME' ? '-' : ''}}{{operation.value}} {{operation.currency.type}}
+                            {{operation.type == 'OUTCOME' ? '-' : ''}}{{operation.value}}&nbsp;<span class="amount-icon {{getCurrencyIcon(operation.currency)}}"></span>
                         </i>
                     </div>
                 </a>
 
 
+            </div>
+
         </div>
+
+        <ion-infinite-scroll
+                ng-if="moreDataCanBeLoaded()"
+                icon="ion-loading-c"
+                on-infinite="load()"
+                distance="1%">
+        </ion-infinite-scroll>
 
     </ion-content>
 </ion-view>

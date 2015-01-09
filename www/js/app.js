@@ -47,7 +47,7 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
     $httpProvider.interceptors.push(function($q, $rootScope) {
         return {
             request: function(config) {
-                $rootScope.$broadcast('loading:show')
+                //$rootScope.$broadcast('loading:show')
                 return config
             },
             response: function(response) {
