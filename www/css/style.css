@@ -183,7 +183,7 @@ textarea {
     height: auto;
 }
 
-    .item-icon-left .icon.circle {
+    .icon.circle {
         min-width: 46px;
         min-height: 46px;
         height: 46px;
@@ -194,7 +194,7 @@ textarea {
         padding-left: 7px;
     }
 
-    .item-icon-left .icon.circle.fa {
+    .icon.circle.fa {
         font-size: 28px;
     }
 
@@ -566,6 +566,28 @@ textarea {
     content: "др.";
     font-size: 18px;
 }
+
+/**
+ * Icon, color select
+ */
+.color-picker-wrap {
+    text-align: center;
+}
+
+.color-picker-wrap .icon.circle {
+    display: inline-block;
+    font-size: 32px;
+    padding-left: 0px;
+    padding-top: 7px;
+    margin: 5px;
+}
+
+.color-picker-wrap .icon.circle.fa {
+    font-size: 28px;
+    padding-top: 10px;
+}
+
+
 
 
 /**

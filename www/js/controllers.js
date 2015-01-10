@@ -493,7 +493,9 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             id  : category.id,
             name: category.name,
             type: category.type,
-            parentCategory: category.parent
+            parentCategory: category.parent,
+            color: category.color,
+            icon : category.icon
         }
 
         categoryService.update(data).then(function(data) {
@@ -635,37 +637,9 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     $scope.doRefresh(false);
 })
 
-.controller('ReportCtrl', function($scope, $state, $stateParams, $ionicModal, reportService) {
+.controller('ReportCtrl', function($scope, $state, $stateParams, $ionicModal, reportService, iconService) {
 
-    var chartColors = ['#b66b80',
-                       '#6c75b6',
-                       '#6da6b7',
-                       '#6cb6a5',
-                       '#6c8db6',
-                       '#6cb57d',
-                       '#b76caf',
-                       '#9a6cb5',
-                       '#b66c6d',
-                       '#b69f6d',
-                       '#6cb3b7',
-                       '#b6786d',
-                       '#aab66c',
-                       '#b78a6d',
-                       '#6c98b5',
-                       '#6cb3b7',
-                       '#80b66b',
-                       '#b2b66c',
-                       '#6db5b1',
-                       '#b5926c',
-                       '#b76b6b',
-                       '#b6956c',
-                       '#b7796c',
-                       '#6c98b5',
-                       '#b7b56b',
-                       '#6cacb6',
-                       '#9ab66c',
-                       '#6fb56c',
-                       '#b36b6c'];
+    var chartColors = iconService.getColorList();
 
     $scope.legendData = [];
     $scope.chartType = 'line';

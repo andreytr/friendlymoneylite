@@ -70,6 +70,60 @@ angular.module('fm.directives', [])
     };
 })
 
+.directive('colorSelect', function($ionicModal, accountService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon ion-record" style="color: {{value}}"></i>' +
+                       '<p ng-class="{empty: value == null}">{{title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
+                   '</label>',
+        scope   : {
+            icon: "=icon",
+            value: "=value"
+        },
+        link: function($scope, element, attrs) {
+            $scope.title = 'Цвет категории';
+
+            $ionicModal.fromTemplateUrl("templates/colorSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.iconValue = iconService.getCategoryIcon($scope.icon);
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                $scope.recordList = iconService.getColorList();
+
+                if (isPull) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.$apply();
+                }
+            };
+
+            $scope.select = function(color) {
+                $scope.value = color;
+                $scope.close();
+            }
+        }
+    };
+})
+
+
+
+
 .directive('accountTypeSelect', function($ionicModal, accountService, iconService){
     return {
         restrict: 'E',
