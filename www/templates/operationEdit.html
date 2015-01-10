@@ -5,19 +5,19 @@
         </div>
         <h1 class="title">{{operation.id ? 'Редактирование операции': 'Новая операция'}}</h1>
         <div class="buttons">
-            <button class="button-icon icon ion-checkmark-round" ng-click="save(operation)"></button>
+            <button class="button-icon icon ion-checkmark-round" ng-click="save(tab)"></button>
         </div>
     </ion-header-bar>
 
     <div class="tabs-striped tabs-top">
         <div class="tabs">
-            <a class="tab-item" ng-click="operation.type = 'OUTCOME'" ng-class="{active: operation.type == 'OUTCOME'}">
+            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">
                 Расход
             </a>
-            <a class="tab-item" ng-click="operation.type = 'INCOME'"  ng-class="{active: operation.type == 'INCOME'}">
+            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}">
                 Доход
             </a>
-            <a class="tab-item" ng-click="operation.type = 'TRANSFER'"  ng-class="{active: operation.type == 'TRANSFER'}">
+            <a class="tab-item" ng-click="changeTab('TRANSFER')"  ng-class="{active: tab == 'TRANSFER'}">
                 Перевод
             </a>
         </div>
@@ -25,20 +25,73 @@
 
     <ion-content class="has-tabs-top">
 
-        <div class="list padding-left-30 padding-right-30 padding-top-30">
-            <label class="item item-input">
-                <input type="text" ng-model="account.name" placeholder="Наименование" required>
-            </label>
+        <div class="padding-left-30 padding-right-30 padding-top-30">
 
-            <category-select value="operation.category"
-                             type="operation.type"
-                             title="'Категория'"
-                             max-level="3"
-                             allow-change-type="false">
-            </category-select>
+            <div ng-if="tab == 'OUTCOME' || tab == 'INCOME'">
+                <date-picker title="'Дата'" value="operation.date"></date-picker>
 
-            <account-type-select value="account.type"></account-type-select>
-            <account-currency-select value="account.currency"></account-currency-select>
+                <account-select title="'Cчет'"
+                                value="operation.account"
+                                currency="operation.currency">
+                </account-select>
+
+                <category-select value="operation.category"
+                                 type="operation.type"
+                                 title="'Категория'"
+                                 max-level="3"
+                                 allow-change-type="false">
+                </category-select>
+
+                <shop-select value="operation.shop"
+                             category="operation.category">
+                </shop-select>
+
+                <label class="item item-input item-icon-left item-icon-right">
+                    <i class="icon ion-cash"></i>
+
+                    <input type="text" ng-model="operation.value" placeholder="Сумма" required>
+                    <i class="icon {{getCurrencyIcon(operation.currency)}}"></i>
+                </label>
+
+                <label class="item item-input item-icon-left item-icon-left-top">
+                    <i class="icon ion-chatbox-working"></i>
+                    <textarea placeholder="Комментарий" rows="3"></textarea>
+                </label>
+            </div>
+
+            <div ng-if="tab == 'TRANSFER'">
+                <date-picker title="'Дата'" value="transfer.date"></date-picker>
+
+
+                <p class="delimiter"></p>
+                <account-select title="'Cо счета'"
+                                value="transfer.fromAccount"
+                                currency="transfer.fromCurrency">
+                </account-select>
+
+                <label class="item item-input item-icon-left item-icon-right">
+                    <i class="icon ion-cash"></i>
+
+                    <input type="text" ng-model="transfer.fromValue" placeholder="Сумма" required>
+                    <i class="icon {{getCurrencyIcon(transfer.fromCurrency)}}"></i>
+                </label>
+
+
+                <p class="delimiter"></p>
+                <account-select title="'На счет'"
+                                value="transfer.toAccount"
+                                currency="transfer.toCurrency">
+                </account-select>
+
+                <label class="item item-input item-icon-left item-icon-right">
+                    <i class="icon ion-cash"></i>
+
+                    <input type="text" ng-model="transfer.toValue" placeholder="Сумма" required>
+                    <i class="icon {{getCurrencyIcon(transfer.toCurrency)}}"></i>
+                </label>
+
+
+            </div>
 
 
         </div>

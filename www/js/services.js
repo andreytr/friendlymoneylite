@@ -132,6 +132,22 @@ angular.module('fm.services', [])
             .success(function(result) {
                 return result;
             });
+        },
+        update: function(operation) {
+            return $http.post(mainUrl + "operation/update", operation)
+            .success(function(result) {
+                return result;
+            });
+
+        },
+        transfer: function(transfer) {
+            delete transfer['fromCurrency'];
+            delete transfer['toCurrency'];
+
+            return $http.post(mainUrl + "operation/transfer", transfer)
+            .success(function(result) {
+                return result;
+            });
         }
    }
 })

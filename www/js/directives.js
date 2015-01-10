@@ -4,7 +4,8 @@ angular.module('fm.directives', [])
     return {
         restrict: 'E',
         replace : true,
-        template: '<label class="item item-input item-select-list item-icon-right" ng-click="open()">' +
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon fa fa-star"></i>' +
                        '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
                        '<i class="icon ion-chevron-right"></i>' +
                    '</label>',
@@ -53,7 +54,10 @@ angular.module('fm.directives', [])
             };
 
             $scope.select = function(category) {
-                $scope.value = category;
+                $scope.value = {
+                    id: category['id'],
+                    name: category['name']
+                };
                 $scope.close();
             }
 
@@ -184,11 +188,155 @@ angular.module('fm.directives', [])
     };
 })
 
+.directive('accountSelect', function($ionicModal, accountService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon ion-card"></i>' +
+                       '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
+                   '</label>',
+        scope   : {
+            value: "=value",
+            currency: "=currency",
+            title: "=title"
+        },
+        link: function($scope, element, attrs) {
+            $ionicModal.fromTemplateUrl("templates/typeRecordSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                accountService.getList().then(function(data) {
+                    $scope.recordList = data;
+                });
+
+                if (isPull) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.$apply();
+                }
+            };
+
+            $scope.select = function(account) {
+                $scope.value = {
+                    id: account.id,
+                    name: account.name
+                };
+                $scope.currency = account.currency;
+
+                $scope.close();
+            }
+
+            $scope.getColor = function(account) {
+                return iconService.getAccountColor(account.type);
+            };
+
+            $scope.getIcon = function(account) {
+                return iconService.getAccountIcon(account.type);
+            };
+
+        }
+    };
+})
+
+
+.directive('shopSelect', function($ionicModal, shopService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon ion-bag"></i>' +
+                       '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
+                   '</label>',
+        scope   : {
+            value: "=value",
+            category: "=category"
+        },
+        link: function($scope, element, attrs) {
+            $scope.title = "Учреждение";
+
+            $ionicModal.fromTemplateUrl("templates/shopSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                shopService.getList().then(function(data) {
+                    $scope.recordList = data.data;
+                });
+
+                if (isPull) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.$apply();
+                }
+            };
+
+            $scope.select = function(shop) {
+                $scope.value = {
+                    id: shop.id,
+                    type: shop.name,
+                    name: shop.title
+                };
+                if (!$scope.category) {
+                    $scope.category = shop.defaultCategory;
+                }
+
+                $scope.close();
+            }
+
+            $scope.getColor = function(category) {
+                if (category) {
+                    return category.color;
+                }
+                return '#ffffff';
+            };
+
+            $scope.getIcon = function(category) {
+                if (category) {
+                    return iconService.getCategoryIcon(category.icon);
+                }
+                return 'ion-help';
+            };
+
+        }
+    };
+})
+
+
+
 .directive('datePicker', function($ionicModal, $ionicPopup, $filter){
     return {
         restrict: 'E',
         replace : true,
-        template: '<label class="item item-input item-select-list item-icon-right" ng-click="open()">' +
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon ion-calendar"></i>' +
                        '<p ng-class="{empty: value == null}">{{value == null ? title : ""}}{{value | date:"yyyy-MM-dd"}}</p>' +
                        '<i class="icon ion-chevron-right"></i>' +
                    '</label>',

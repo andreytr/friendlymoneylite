@@ -38,6 +38,11 @@ body input {
     color: white;
 }
 
+textarea {
+    background-color: transparent;
+    color: white;
+}
+
 
 /**
  * Menu
@@ -287,11 +292,32 @@ body input {
     border-color: #2d4b63;
 }
 
-.item-select-list.item-icon-right .icon {
+.item-input.item-icon-left {
+    padding-left: 32px;
+}
+
+.item-input.item-icon-right {
+    padding-right: 32px;
+}
+
+
+
+.item-input.item-icon-right .icon,
+.item-input.item-icon-left .icon {
     font-size: 16px;
     right: 0px;
     color: white;
 }
+
+.item-input.item-icon-left .icon {
+    left: 0px;
+}
+
+.item-input.item-icon-left-top .icon {
+    height: 32px;
+}
+
+
 
 .padding-left-30 {
     padding-left: 30px;
@@ -327,6 +353,10 @@ body input {
     background-color: #02d0ff;
 }
 
+
+.delimiter {
+    height: 20px;
+}
 
 
 /**

@@ -157,7 +157,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('OperationsCtrl', function($scope, $filter, $ionicModal, iconService, operationService) {
+.controller('OperationsCtrl', function($scope, $filter, $ionicModal, $ionicScrollDelegate, iconService, operationService) {
 
     $scope.getItemHeight = function(operation, index) {
         if ($scope.needShowGroup(operation, $scope.operations[index - 1])) {
@@ -223,6 +223,9 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     }
 
     $scope.getCurrencyIcon = function(currency) {
+        if (!currency) {
+            return '';
+        }
         return iconService.getCurrencyIcon(currency.type);
     };
 
@@ -234,10 +237,26 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         $scope.editModal = modal
     })
 
+    $scope.changeTab = function(tab) {
+        $scope.tab = tab;
+        if (tab != 'TRANSFER') {
+            $scope.operation = {
+                type: tab
+            }
+        }
+        else {
+            $scope.transfer = {};
+        }
+    };
+
+    $scope.$watch("operation.shop", function(newValue, oldValue) {
+        if ($scope.operation && !$scope.operation.category) {
+            $scope.operation.category = newValue.defaultCategory;
+        }
+    });
+
     $scope.add = function() {
-        $scope.operation = {
-            type: 'OUTCOME'
-        };
+        $scope.changeTab('OUTCOME');
         $scope.editModal.show();
     }
 
@@ -250,11 +269,18 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         $scope.editModal.hide();
     };
 
-    $scope.save = function(operation) {
-        operationService.update(operation).then(function(data) {
+    $scope.save = function(tab) {
+        var callback = function(data) {
             $scope.editModal.hide();
             $scope.doRefresh(false);
-        });
+        };
+
+        if (tab == 'TRANSFER') {
+            operationService.transfer($scope.transfer).then(callback);
+        }
+        else {
+            operationService.update($scope.operation).then(callback);
+        }
     };
 
     $scope.remove = function(operation) {
