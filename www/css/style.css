@@ -161,9 +161,14 @@ textarea {
     padding: 10px 15px;
     color: white;
     background-color: #153043;
-    margin-top: 10px;
+    margin-top: 0px;
     height: 40px;
     border-width: 0px;
+}
+
+.content-list .item.item-divider:active,
+.content-list .item.item-divider:activated {
+    background-color: #153043;
 }
 
 .content-list a.item {

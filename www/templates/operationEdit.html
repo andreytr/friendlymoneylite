@@ -11,13 +11,13 @@
 
     <div class="tabs-striped tabs-top">
         <div class="tabs">
-            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}">
+            <a class="tab-item" ng-click="changeTab('OUTCOME')" ng-class="{active: tab == 'OUTCOME'}" ng-if="tab == 'OUTCOME' || showTabs">
                 Расход
             </a>
-            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}">
+            <a class="tab-item" ng-click="changeTab('INCOME')"  ng-class="{active: tab == 'INCOME'}"  ng-if="tab == 'INCOME' || showTabs">
                 Доход
             </a>
-            <a class="tab-item" ng-click="changeTab('TRANSFER')"  ng-class="{active: tab == 'TRANSFER'}">
+            <a class="tab-item" ng-click="changeTab('TRANSFER')"  ng-class="{active: tab == 'TRANSFER'}"  ng-if="tab == 'TRANSFER' || showTabs">
                 Перевод
             </a>
         </div>
@@ -55,7 +55,7 @@
 
                 <label class="item item-input item-icon-left item-icon-left-top">
                     <i class="icon ion-chatbox-working"></i>
-                    <textarea placeholder="Комментарий" rows="3"></textarea>
+                    <textarea placeholder="Комментарий" rows="3" ng-model="operation.description"></textarea>
                 </label>
             </div>
 

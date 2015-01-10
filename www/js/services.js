@@ -134,6 +134,7 @@ angular.module('fm.services', [])
             });
         },
         update: function(operation) {
+            delete operation['temp'];
             return $http.post(mainUrl + "operation/update", operation)
             .success(function(result) {
                 return result;

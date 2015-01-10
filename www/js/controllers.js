@@ -160,8 +160,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 .controller('OperationsCtrl', function($scope, $filter, $ionicModal, $ionicScrollDelegate, iconService, operationService) {
 
     $scope.getItemHeight = function(operation, index) {
-        if ($scope.needShowGroup(operation, $scope.operations[index - 1])) {
-            return  120;
+        if (operation.temp.needShowGroup) {
+            return  115;
         }
         return 76;
     };
@@ -186,6 +186,23 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             $scope.loadedPage = page;
 
             if (result.data.length > 0) {
+                for(var i = 0; i < result.data.length; i++) {
+                    var prev = null;
+                    if (i == 0 && $scope.operations.length > 0) {
+                        prev = $scope.operations[$scope.operations.length - 1];
+                    }
+                    else {
+                        prev = result.data[i - 1];
+                    }
+
+                    var oper = result.data[i];
+                    oper.temp = {
+                        groupTitle: $scope.getGroupTitle(oper),
+                        currencyIcon: $scope.getCurrencyIcon(oper.currency)
+                    }
+                    oper.temp.needShowGroup = $scope.needShowGroup(oper, prev);
+                }
+
                 $scope.operations = $scope.operations.concat(result.data);
             }
 
@@ -206,8 +223,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
     $scope.needShowGroup = function(operation, prevOperation) {
         if (prevOperation) {
-            var group = $scope.getGroupTitle(operation);
-            var prevGroup = $scope.getGroupTitle(prevOperation);
+            var group = operation.temp.groupTitle;
+            var prevGroup = prevOperation.temp.groupTitle;
             return group != prevGroup;
         }
         else {
@@ -256,12 +273,25 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     });
 
     $scope.add = function() {
+        $scope.showTabs = true;
         $scope.changeTab('OUTCOME');
         $scope.editModal.show();
     }
 
     $scope.edit = function(operation) {
-        $scope.operation = operation;
+        $scope.showTabs = false;
+        if (operation.type == 'OUTCOME' || operation.type == 'INCOME') {
+            $scope.changeTab(operation.type);
+            $scope.operation = operation;
+        }
+        else {
+            return; //TODO
+            $scope.changeTab('TRANSFER');
+            $scope.transfer = {
+                date: operation.date
+            };
+        }
+
         $scope.editModal.show();
     }
 
