@@ -218,7 +218,7 @@ angular.module('fm.services', [])
         'medicine':     'ion-medkit',           //Медицина, аптеки
         'internet':     'ion-wifi',             //Мобильная связь, интернет, ТВ
         'education':    'ion-university',       //Образование
-        'clothing':     'ion-tshirt',           //Одежда, обувь, аксесуары
+        'clothing':     '',                     //Одежда, обувь, аксесуары
         'food':         'fa fa-shopping-cart',  //Продукты
         'star':         'fa fa-star-o',         //Развлечения
         'restaurant':   'ion-coffee',           //Кафе, рестораны
@@ -231,7 +231,7 @@ angular.module('fm.services', [])
         'taxi':         'fa fa-taxi',           //Такси
         'tax':          'fa fa-newspaper-o',    //Штрафы, налоги, пошлины
         'cinema':       'ion-film-marker',      //Боулинг, кино и т.д.
-        'flowers':      'ion-ios7-flower',      //Цветы
+        'flowers':      '',                     //Цветы
         'cloud':        'ion-cloud',            //Софт, программы
         'sport':        'fa fa-bicycle',        //Спорт
         'dance':        '',                     //Танцы
@@ -308,6 +308,16 @@ angular.module('fm.services', [])
                 return categoryIconMap[iconName];
             }
             return 'ion-help';
+        },
+
+        getIconList: function() {
+            var result = [];
+            for(var k in categoryIconMap) {
+                if (categoryIconMap[k]) {
+                    result.push(k);
+                }
+            }
+            return result;
         },
 
         getColorList: function() {

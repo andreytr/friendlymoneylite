@@ -121,6 +121,60 @@ angular.module('fm.directives', [])
     };
 })
 
+.directive('iconSelect', function($ionicModal, accountService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<label class="item item-input item-select-list item-icon-left item-icon-right" ng-click="open()">' +
+                       '<i class="icon {{getIcon(value)}}"></i>' +
+                       '<p ng-class="{empty: value == null}">{{title}}</p>' +
+                       '<i class="icon ion-chevron-right"></i>' +
+                   '</label>',
+        scope   : {
+            color: "=color",
+            value: "=value"
+        },
+        link: function($scope, element, attrs) {
+            $scope.title = 'Значек категории';
+
+            $scope.getIcon = function(icon) {
+                return iconService.getCategoryIcon(icon);
+            }
+
+            $ionicModal.fromTemplateUrl("templates/iconSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                $scope.recordList = iconService.getIconList();
+
+                if (isPull) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.$apply();
+                }
+            };
+
+            $scope.select = function(color) {
+                $scope.value = color;
+                $scope.close();
+            }
+        }
+    };
+})
+
 
 
 
