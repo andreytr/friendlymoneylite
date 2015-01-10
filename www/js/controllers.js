@@ -168,10 +168,10 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
     $scope.getIcon = function(operation) {
         if (operation.type == 'INPUT_TRANSFER') {
-            return 'ion-arrow-down-c';
+            return 'ion-log-in';
         }
         if (operation.type == 'OUTPUT_TRANSFER') {
-            return 'ion-arrow-up-c';
+            return 'ion-log-out';
         }
         return iconService.getCategoryIcon(operation.category.icon);
     }

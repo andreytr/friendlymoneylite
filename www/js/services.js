@@ -223,7 +223,7 @@ angular.module('fm.services', [])
         'star':         'fa fa-star-o',         //Развлечения
         'restaurant':   'ion-coffee',           //Кафе, рестораны
         'rocket':       'fa fa-rocket',         //Хобби, увлечения
-        'vacation':     '',                     //Отпуск, путешествия
+        'vacation':     'fa fa-sun-o',          //Отпуск, путешествия
         'road':         'fa fa-road',           //Транспорт
         'car':          'ion-model-s',          //Личный автомобиль (топливо, обслужива...
         'bus':          'fa fa-bus',            //Общественный транспорт
@@ -231,7 +231,7 @@ angular.module('fm.services', [])
         'taxi':         'fa fa-taxi',           //Такси
         'tax':          'fa fa-newspaper-o',    //Штрафы, налоги, пошлины
         'cinema':       'ion-film-marker',      //Боулинг, кино и т.д.
-        'flowers':      '',                     //Цветы
+        'flowers':      'ion-leaf',             //Цветы
         'cloud':        'ion-cloud',            //Софт, программы
         'sport':        'fa fa-bicycle',        //Спорт
         'dance':        '',                     //Танцы
@@ -240,7 +240,85 @@ angular.module('fm.services', [])
         'freelance':    'ion-paper-airplane',   //Фриланс
         'gift':         'fa fa-gift',           //Подарки
         'money':        'fa fa-money',          //Работа
-        'deposit':      'fa fa-bank'            //Депозит, cashback
+        'deposit':      'fa fa-bank',            //Депозит, cashback
+
+
+
+
+        'checkmark-round':  'ion-checkmark-round',
+        'help-buoy':    'ion-help-buoy',
+        'asterisk':     'ion-asterisk',
+        'alert':        'ion-alert',
+        'alert-circled':    'ion-alert-circled',
+        'flag':         'ion-flag',
+        'star':         'ion-star',
+        'heart-broken': 'ion-heart-broken',
+        'gear':         'ion-gear-a',
+        'settings':     'ion-settings',
+        'wrench':       'ion-wrench',
+        'hammer':       'ion-hammer',
+        'edit':         'ion-edit',
+        'trash-a':      'ion-trash-a',
+        'trash-b':      'ion-trash-b',
+        'document':     'ion-document',
+        'document-text':'ion-document-text',
+        'bookmark':     'ion-bookmark',
+        'email':        'ion-email',
+        'archive':      'ion-archive',
+        'share':        'ion-share',
+        'paperclip':    'ion-paperclip',
+        'at':           'ion-at',
+        'pound':        'ion-pound',
+        'compass':      'ion-compass',
+        'pinpoint':     'ion-pinpoint',
+        'pin':          'ion-pin',
+        'navigate':     'ion-navigate',
+        'location':     'ion-location',
+        'map':          'ion-map',
+        'unlocked':     'ion-unlocked',
+        'key':          'ion-key',
+        'arrow-graph-down-right': 'ion-arrow-graph-down-right',
+        'chatbubble':   'ion-chatbubble',
+        'chatbubbles':  'ion-chatbubbles',
+        'person':       'ion-person',
+        'person-stalker':'ion-person-stalker',
+        'woman':        'ion-woman',
+        'man':          'ion-man',
+        'female':       'ion-female',
+        'male':         'ion-male',
+        'fork':         'ion-fork',
+        'knife':        'ion-knife',
+        'spoon':        'ion-spoon',
+        'beer':         'ion-beer',
+        'icecream':     'ion-icecream',
+        'pizza':        'ion-pizza',
+        'camera':       'ion-camera',
+        'images':       'ion-images',
+        'image':        'ion-image',
+        'laptop':       'ion-laptop',
+        'ipad':         'ion-ipad',
+        'iphone':       'ion-iphone',
+        'printer':      'ion-printer',
+        'game':         'ion-game-controller-b',
+        'video':        'ion-videocamera',
+        'bag':          'ion-bag',
+        'trophy':       'ion-trophy',
+        'happy':        'ion-happy',
+        'sad':          'ion-sad',
+        'egg':          'ion-egg',
+        'light':        'ion-lightbulb',
+        'bonfire':      'ion-bonfire',
+        'animal':       'fa fa-paw',
+        'tree':         'fa fa-tree',
+        'university':   'fa fa-university',
+        'futbol':       'fa fa-futbol-o',
+        'plane2':       'fa fa-plane',
+        'anchor':       'fa fa-anchor',
+        'book':         'fa fa-book',
+        'child':        'fa fa-child',
+        'truck':        'fa fa-truck',
+        'gavel':        'fa fa-gavel',
+        'cake':         'fa fa-birthday-cake'
     }
 
    return {
@@ -321,33 +399,12 @@ angular.module('fm.services', [])
         },
 
         getColorList: function() {
-            return ['#b66b80',
-                      '#6c75b6',
-                      '#6da6b7',
-                      '#6cb6a5',
-                      '#6c8db6',
-                      '#6cb57d',
-                      '#b76caf',
-                      '#9a6cb5',
-                      '#b66c6d',
-                      '#b69f6d',
-                      '#6cb3b7',
-                      '#b6786d',
-                      '#aab66c',
-                      '#b78a6d',
-                      '#6c98b5',
-                      '#80b66b',
-                      '#b2b66c',
-                      '#6db5b1',
-                      '#b5926c',
-                      '#b76b6b',
-                      '#b6956c',
-                      '#b7796c',
-                      '#b7b56b',
-                      '#6cacb6',
-                      '#9ab66c',
-                      '#6fb56c',
-                      '#b36b6c']
+            return [  '#6c75b6', '#6c8db6', '#6c98b5', '#6da6b7', '#6cacb6',
+                      '#6cb3b7', '#6cb6a5', '#6db5b1', '#6cb57d', '#6fb56c',
+                      '#80b66b', '#9ab66c', '#aab66c', '#b2b66c', '#b7b56b',
+                      '#b69f6d', '#b5926c', '#b6956c', '#b78a6d', '#b7796c',
+                      '#b6786d', '#b36b6c', '#b66c6d', '#b76b6b', '#b66b80',
+                      '#b76caf', '#9a6cb5' ]
         }
    }
 })
