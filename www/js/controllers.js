@@ -493,9 +493,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             id  : category.id,
             name: category.name,
             type: category.type,
-            parentCategory: {
-                id: category.parentId
-            }
+            parentCategory: category.parent
         }
 
         categoryService.update(data).then(function(data) {
