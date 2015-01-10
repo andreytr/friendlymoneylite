@@ -1,6 +1,6 @@
 angular.module('fm.directives', [])
 
-.directive('categorySelect', function($ionicModal, $ionicScrollDelegate, categoryService){
+.directive('categorySelect', function($ionicModal, $ionicScrollDelegate, categoryService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -39,7 +39,7 @@ angular.module('fm.directives', [])
             }
 
             $scope.getIcon = function(category) {
-                return 'ion-pound';
+                return iconService.getCategoryIcon(category.icon);
             }
 
             $scope.doRefresh = function(isPull) {

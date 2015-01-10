@@ -22,7 +22,7 @@
                 </div>
 
                 <a class="item item-icon-left " ng-click="edit(oper)" ng-class="{'last':$last || oper[$index + 1].temp.needShowGroup}">
-                    <i class="icon circle {{oper.category.icon}}" style="background-color: {{oper.category.color}}"></i>
+                    <i class="icon circle {{getIcon(oper)}}" style="background-color: {{oper.category.color}}"></i>
                     <div class="content-item one-line-item item-amount">
                         <h2>
                             <span ng-if="oper.type == 'INCOME' || oper.type == 'OUTCOME'">

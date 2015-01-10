@@ -166,6 +166,16 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         return 76;
     };
 
+    $scope.getIcon = function(operation) {
+        if (operation.type == 'INPUT_TRANSFER') {
+            return 'ion-arrow-down-c';
+        }
+        if (operation.type == 'OUTPUT_TRANSFER') {
+            return 'ion-arrow-up-c';
+        }
+        return iconService.getCategoryIcon(operation.category.icon);
+    }
+
     $scope.doRefresh = function(isPull) {
         $scope.operations = [];
         $scope.loadedPage = 0;
@@ -414,9 +424,9 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 })
 
 
-.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, categoryService) {
+.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, iconService, categoryService) {
 
-$scope.showMenu = function(account) {
+    $scope.showMenu = function(account) {
         $ionicActionSheet.show({
             destructiveText: 'Удалить',
             cancelText: 'Отмена',
@@ -442,7 +452,7 @@ $scope.showMenu = function(account) {
     };
 
     $scope.getIcon = function(category) {
-        return 'ion-pound';
+        return iconService.getCategoryIcon(category.icon);
     };
 
     $scope.changeTab = function(tab) {

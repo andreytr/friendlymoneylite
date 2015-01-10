@@ -202,6 +202,47 @@ angular.module('fm.services', [])
 
 .factory('iconService', function() {
 
+    var categoryIconMap = {
+        'business':     'ion-briefcase',        //Бизнес
+        'charity':      'ion-heart',            //Благотворительность
+        'home':         'ion-home',             //Дом
+        'household_appliances': 'ion-monitor',  //Бытовая техника
+        'utilities':    '',                     //Коммунальные платежи
+        'rent':         'ion-clock',            //Аренда
+        'repair':       '',                     //Ремонт
+        'credit'        : 'ion-percent',        //Долги, кредиты
+        'mortgage':     '',                     //Ипотека
+        'other':        'ion-more',             //Другое
+        'invest':       'ion-arrow-graph-up-right', //Инвестиции
+        'beauty':       '',                     //Красота и здоровье
+        'medicine':     'ion-medkit',           //Медицина, аптеки
+        'internet':     'ion-wifi',             //Мобильная связь, интернет, ТВ
+        'education':    'ion-university',       //Образование
+        'clothing':     'ion-tshirt',           //Одежда, обувь, аксесуары
+        'food':         'fa fa-shopping-cart',  //Продукты
+        'star':         'fa fa-star-o',         //Развлечения
+        'restaurant':   'ion-coffee',           //Кафе, рестораны
+        'rocket':       'fa fa-rocket',         //Хобби, увлечения
+        'vacation':     '',                     //Отпуск, путешествия
+        'road':         'fa fa-road',           //Транспорт
+        'car':          'ion-model-s',          //Личный автомобиль (топливо, обслужива...
+        'bus':          'fa fa-bus',            //Общественный транспорт
+        'airplane':     'ion-plane',            //Поезда, самолеты, корабли
+        'taxi':         'fa fa-taxi',           //Такси
+        'tax':          'fa fa-newspaper-o',    //Штрафы, налоги, пошлины
+        'cinema':       'ion-film-marker',      //Боулинг, кино и т.д.
+        'flowers':      'ion-ios7-flower',      //Цветы
+        'cloud':        'ion-cloud',            //Софт, программы
+        'sport':        'fa fa-bicycle',        //Спорт
+        'dance':        '',                     //Танцы
+        'music':        'ion-music-note',       //Музыка
+        'celebration':  'ion-wineglass',        //Торжества
+        'freelance':    'ion-paper-airplane',   //Фриланс
+        'gift':         'fa fa-gift',           //Подарки
+        'money':        'fa fa-money',          //Работа
+        'deposit':      'fa fa-bank'            //Депозит, cashback
+    }
+
    return {
         getAccountIcon: function(type) {
              if (type) {
@@ -263,6 +304,9 @@ angular.module('fm.services', [])
         },
 
         getCategoryIcon: function(iconName) {
+            if (categoryIconMap.hasOwnProperty(iconName)) {
+                return categoryIconMap[iconName];
+            }
             return 'ion-help';
         }
    }
