@@ -1,6 +1,6 @@
 angular.module('fm.directives', [])
 
-.directive('categorySelect', function($ionicModal, $ionicScrollDelegate, categoryService, iconService){
+.directive('categorySelect', function($ionicModal, $ionicScrollDelegate, dataService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -43,13 +43,17 @@ angular.module('fm.directives', [])
             }
 
             $scope.doRefresh = function(isPull) {
-                categoryService.getTreeList().then(function(data) {
-                    $scope.categoryList = data;
-                });
+                $scope.categoryList = dataService.getCategoryList();
 
                 if (isPull) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    $scope.$apply();
+                    dataService.loadData(function() {
+                        $scope.categoryList = dataService.getCategoryList();
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }, function() {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    });
                 }
             };
 
