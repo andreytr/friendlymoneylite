@@ -178,7 +178,7 @@ angular.module('fm.directives', [])
 
 
 
-.directive('accountTypeSelect', function($ionicModal, accountService, iconService){
+.directive('accountTypeSelect', function($ionicModal, dataService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -210,13 +210,17 @@ angular.module('fm.directives', [])
             }
 
             $scope.doRefresh = function(isPull) {
-                accountService.getTypeList().then(function(data) {
-                    $scope.recordList = data;
-                });
+                $scope.recordList = dataService.getAccountTypeList();
 
                 if (isPull) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    $scope.$apply();
+                    dataService.loadData(function() {
+                        $scope.recordList = dataService.getAccountTypeList();
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }, function() {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    });
                 }
             };
 
@@ -237,7 +241,7 @@ angular.module('fm.directives', [])
     };
 })
 
-.directive('accountCurrencySelect', function($ionicModal, accountService, iconService){
+.directive('accountCurrencySelect', function($ionicModal, dataService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -269,13 +273,17 @@ angular.module('fm.directives', [])
             }
 
             $scope.doRefresh = function(isPull) {
-                accountService.getCurrencyList().then(function(data) {
-                    $scope.recordList = data;
-                });
+                $scope.recordList = dataService.getCurrencyList();
 
                 if (isPull) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    $scope.$apply();
+                    dataService.loadData(function() {
+                        $scope.recordList = dataService.getCurrencyList();
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }, function() {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    });
                 }
             };
 
