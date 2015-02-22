@@ -5,7 +5,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 })
 
 
-.controller('LoginCtrl', function($scope, $state, $ionicPopup, userService) {
+.controller('LoginCtrl', function($scope, $state, $ionicPopup, $rootScope, userService, dataService) {
 
     $scope.user = {
         username: '',
@@ -14,17 +14,22 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
     $scope.login = function(user) {
         if (!user.username || !user.password) {
-            $ionicPopup.alert({
-                cssClass: 'error',
-                template: 'Заполните все обязательные поля'
-            });
-
+            $rootScope.$broadcast('loading:showError', 'Заполните все обязательные поля');
             return;
         }
 
+        $rootScope.$broadcast('loading:show');
         userService.login(user.username, user.password).then(function(result) {
             if (result) {
-                $state.go('app.main');
+                dataService.loadData(function() {
+                    $state.go('app.main');
+                    $rootScope.$broadcast('loading:hide');
+                }, function() {
+                    $rootScope.$broadcast('loading:hide');
+                });
+            }
+            else {
+                $rootScope.$broadcast('loading:showError', 'Ошибка 0012');
             }
         });
     }
@@ -35,7 +40,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('RegistrationCtrl', function($scope, $state, $ionicPopup, userService) {
+.controller('RegistrationCtrl', function($scope, $state, $ionicPopup, $rootScope, userService, dataService) {
     $scope.user = {
         username: '',
         password: '',
@@ -59,7 +64,15 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         })
         .then(function(result) {
             if (result) {
-                $state.go('app.main');
+                dataService.loadData(function() {
+                    $state.go('app.main');
+                    $rootScope.$broadcast('loading:hide');
+                }, function() {
+                    $rootScope.$broadcast('loading:hide');
+                });
+            }
+            else {
+                $rootScope.$broadcast('loading:showError', 'Ошибка 0013');
             }
         });
     }

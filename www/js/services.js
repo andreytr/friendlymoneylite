@@ -1,5 +1,5 @@
 //var mainUrl = 'https://friendly-money.com/api/';
-var mainUrl = 'http://192.168.0.101:8080/friendly-money/api/';
+var mainUrl = 'http://127.0.0.1:8080/friendly-money/api/';
 
 
 angular.module('fm.services', [])
@@ -718,5 +718,52 @@ angular.module('fm.services', [])
         }
     }
 
-});
+})
 
+.factory('dataService', function($http, settingsService) {
+    return {
+        loadData: function(callback, errorCallback) {
+            return $http.get(mainUrl + "data/dictionaryData")
+            .then(function(result) {
+                var data = {};
+                if (result && result.data && result.data.length > 0) {
+                    data = result.data[0];
+                }
+                else if (errorCallback) {
+                    errorCallback.call(this);
+                    return;
+                }
+
+                settingsService.setObject('fmData', data);
+                console.info(data);
+                if (callback) {
+                    callback.call(this);
+                }
+            });
+        }
+    }
+})
+
+
+.factory('settingsService', function($window) {
+
+    return {
+        get: function(key, defaultValue) {
+            return $window.localStorage[key] || defaultValue;
+        },
+
+        set: function(key, value) {
+            $window.localStorage[key] = value;
+        },
+
+        getObject: function(key) {
+            return JSON.parse($window.localStorage[key] || {});
+        },
+
+        setObject: function(key, obj) {
+            $window.localStorage[key] = JSON.stringify(obj);
+        }
+
+    }
+
+});
