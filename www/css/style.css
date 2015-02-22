@@ -94,6 +94,10 @@ textarea {
         padding: 23px 0px 0px 5px;
     }
 
+    .menu-content-item.menu-content-item-last {
+        border-bottom: none;
+    }
+
     .menu-list .item a.activated .menu-content-item {
         border-bottom: none;
     }
