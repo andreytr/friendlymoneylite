@@ -176,6 +176,16 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
                 controller: 'MessagesCtrl'
             }
         }
+    })
+
+    .state('app.settings', {
+        url: "/settings",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/settings.html",
+                controller: 'SettingsCtrl'
+            }
+        }
     });
 
 

@@ -953,6 +953,31 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     $scope.$on('$destroy', function() {
         $scope.readFormModal.remove();
     });
+})
+
+.controller('SettingsCtrl', function($scope, $state, $ionicScrollDelegate, dataService) {
+
+    $scope.getData = function() {
+        $scope.userProfile = dataService.getUserProfile();
+    }
+
+    $scope.logout = function() {
+        dataService.clearData();
+        $state.go('login');
+    }
+
+    $scope.doRefresh = function(isPull) {
+        if (isPull) {
+            dataService.loadData(function() {
+                $scope.getData();
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            });
+        }
+    }
+
+    $scope.getData();
+
 });
 
 

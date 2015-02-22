@@ -734,13 +734,46 @@ angular.module('fm.services', [])
                     return;
                 }
 
-                settingsService.setObject('fmData', data);
+                settingsService.setObject('fmData.userProfile', data['userProfile']);
+                settingsService.setObject('fmData.operationTypeList', data['operationTypeList']);
+                settingsService.setObject('fmData.currencyList', data['currencyList']);
+                settingsService.setObject('fmData.accountTypeList', data['accountTypeList']);
+                settingsService.setObject('fmData.categoriesTreeList', data['categoriesTreeList']);
                 console.info(data);
                 if (callback) {
                     callback.call(this);
                 }
             });
+        },
+
+        clearData: function() {
+            settingsService.setObject('fmData.userProfile', null);
+            settingsService.setObject('fmData.operationTypeList', null);
+            settingsService.setObject('fmData.currencyList', null);
+            settingsService.setObject('fmData.accountTypeList', null);
+            settingsService.setObject('fmData.categoriesTreeList', null);
+        },
+
+        getUserProfile: function() {
+            return settingsService.getObject('fmData.userProfile');
+        },
+
+        getOperationTypeList: function() {
+            return settingsService.getObject('fmData.operationTypeList');
+        },
+
+        getCurrencyList: function() {
+            return settingsService.getObject('fmData.currencyList');
+        },
+
+        getAccountTypeList: function() {
+            return settingsService.getObject('fmData.accountTypeList');
+        },
+
+        getCategoryList: function() {
+            return settingsService.getObject('fmData.categoriesTreeList');
         }
+
     }
 })
 

@@ -159,7 +159,7 @@ textarea {
 
 .content-list .item-divider {
     padding: 10px 15px;
-    color: white;
+    color: #02d0ff;
     background-color: #153043;
     margin-top: 0px;
     height: 40px;
@@ -276,6 +276,10 @@ textarea {
     border: none;
     border-bottom: solid 1px #2d4b63;
     margin-bottom: 15px;
+}
+
+.item-floating-label .input-label.has-input {
+    color: #aaaaaa;
 }
 
 .item-input .placeholder-icon {
