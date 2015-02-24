@@ -170,6 +170,10 @@ textarea {
     border-width: 0px;
 }
 
+.content-list .item-divider:active {
+    background-color: #153043;
+}
+
 .content-list .item.item-divider:active,
 .content-list .item.item-divider:activated {
     background-color: #153043;
@@ -282,6 +286,10 @@ textarea {
     margin-bottom: 15px;
 }
 
+.item-floating-label .input-label {
+    width: 100%;
+}
+
 .item-floating-label .input-label.has-input {
     color: #aaaaaa;
 }
@@ -374,6 +382,47 @@ textarea {
 .delimiter {
     height: 20px;
 }
+
+.floating-select .input-label {
+    font-size: 14px;
+    width: 100%;
+    margin-left: 15px;
+    color: #aaaaaa;
+}
+
+.green {
+    color: #95ba6d;
+}
+
+.red {
+    color: #fa5654;
+}
+
+.item-toggle .toggle {
+    top: 16px;
+}
+
+.list .item-toggle {
+    border: none;
+    border-bottom: solid 1px #2d4b63;
+    color: #aaaaaa;
+    word-wrap: normal;
+    white-space: normal;
+    background-color:  #1B3B53;
+    font-size: 14px;
+}
+
+.toggle input + .track {
+    border-color: #b66c6c;
+    background-color: #b66c6c;
+}
+
+.toggle input:checked + .track {
+    border-color: #91b66c;
+    background-color: #91b66c;
+}
+
+
 
 
 /**

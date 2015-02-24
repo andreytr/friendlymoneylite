@@ -520,4 +520,70 @@ angular.module('fm.directives', [])
 
         }
     };
+})
+
+.directive('settingsCurrencySelect', function($ionicModal, dataService, iconService){
+    return {
+        restrict: 'E',
+        replace : true,
+        template: '<span class="floating-select">' +
+                      '<span class="input-label" ng-if="value">{{title}}</span>' +
+                      '<label class="item-input item-select-list item-icon-right" ng-click="open()">' +
+                           '<p ng-class="{empty: value.name == null}">{{value.name != null ? value.name : title}}</p>' +
+                           '<i class="icon ion-chevron-right"></i>' +
+                       '</label>' +
+                  '</span>',
+        scope   : {
+            value: "=value"
+        },
+        link: function($scope, element, attrs) {
+            $scope.title = 'Валюта по умолчанию';
+
+            $ionicModal.fromTemplateUrl("templates/typeRecordSelect.html", {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal
+            });
+
+
+            $scope.open = function() {
+                $scope.doRefresh(false);
+                $scope.modal.show();
+            };
+
+            $scope.close = function() {
+                $scope.modal.hide();
+            }
+
+            $scope.doRefresh = function(isPull) {
+                $scope.recordList = dataService.getCurrencyList();
+
+                if (isPull) {
+                    dataService.loadData(function() {
+                        $scope.recordList = dataService.getCurrencyList();
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }, function() {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    });
+                }
+            };
+
+            $scope.select = function(type) {
+                $scope.value = type;
+                $scope.close();
+            }
+
+            $scope.getColor = function(type) {
+                return "#153043";
+            };
+
+            $scope.getIcon = function(type) {
+                return iconService.getCurrencyIcon(type.type);
+            };
+
+        }
+    };
 });

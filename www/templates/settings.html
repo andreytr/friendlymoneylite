@@ -14,27 +14,66 @@
                 Общее
             </div>
 
-            <div class="list padding-left-30 padding-right-30">
-                <account-currency-select value="account.currency"></account-currency-select>
+            <div class="list padding-left-30 padding-right-30" style="padding-top: 2px">
+                <settings-currency-select value="userProfile.defaultCurrency"></settings-currency-select>
+
+                <ul class="list">
+                    <li class="item item-toggle">
+                        Группировать линейные графики по основной валюте
+
+                        <label class="toggle">
+                            <input type="checkbox" ng-model="userProfile.groupLineReportToDefaultCurrency">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="item item-toggle">
+                        Группировать столбчатые графики по основной валюте
+
+                        <label class="toggle">
+                            <input type="checkbox" ng-model="userProfile.groupBarReportToDefaultCurrency">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+
             </div>
 
             <div class="item item-divider">
                 Учетная запись
             </div>
 
-            <div class="list padding-left-30 padding-right-30">
 
-                <label class="item item-input item-floating-label">
+            <div class="list padding-left-30 padding-right-30" style="padding-top: 2px">
+
+                <label class="item-input item-floating-label">
                     <span class="input-label">E-mail</span>
                     <input type="text" ng-model="userProfile.email" placeholder="E-mail" required>
                 </label>
+
+                <span class="floating-select">
+                    <span class="input-label">Премиум подписка</span>
+                    <label class="item-input" ng-class="{'green': userProfile.status == 'PREMIUM', 'red': userProfile.status != 'PREMIUM'}">
+                        <p>{{getPremiumStatus(userProfile)}}</p>
+                    </label>
+                </span>
+
             </div>
         </div>
 
         <div class="padding-left-30 padding-right-30">
-            <button class="button button-block button-positive" ng-click="logout()">
+            <button class="button button-block button-positive button-outline" ng-click="changePassword()">
+                Сменить пароль
+            </button>
+            <button class="button button-block button-positive button-outline" ng-click="logout()">
                 Выйти
             </button>
+
         </div>
 
     </ion-content>

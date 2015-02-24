@@ -955,7 +955,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     });
 })
 
-.controller('SettingsCtrl', function($scope, $state, $ionicScrollDelegate, dataService) {
+.controller('SettingsCtrl', function($scope, $state, $filter, $ionicScrollDelegate, dataService) {
 
     $scope.getData = function() {
         $scope.userProfile = dataService.getUserProfile();
@@ -964,6 +964,14 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     $scope.logout = function() {
         dataService.clearData();
         $state.go('login');
+    }
+
+    $scope.getPremiumStatus = function(userProfile) {
+        if (userProfile && userProfile.status == 'PREMIUM') {
+            return 'Активна до ' + $filter('date')(userProfile.premiumEndDate, "yyyy-MM-dd");
+        }
+
+        return 'Не активна';
     }
 
     $scope.doRefresh = function(isPull) {
