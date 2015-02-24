@@ -13,11 +13,11 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
         }
     });
 
-    $rootScope.$on('loading:show', function() {
+    $rootScope.$on('loading:show', function(event, message) {
         $ionicLoading.show({
             animation: 'fade-in',
             showBackdrop: true,
-            template: 'Загрузка'
+            template: message || 'Загрузка'
         })
     })
 

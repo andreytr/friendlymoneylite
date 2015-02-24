@@ -429,6 +429,10 @@ textarea {
  * Popups
  */
 
+.popup-container .popup h3{
+    color: white;
+}
+
 .popup-container .popup {
     background-color: #008db8;
 }
@@ -456,8 +460,13 @@ textarea {
 }
 
 .popup input {
-    color: black !important;
+    color: white !important;
+    background-color: #0080a7;
+    border-color: #0080a7;
+    margin: 4px;
+    padding-left: 3px;
 }
+
 
 
 /**

@@ -955,15 +955,59 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     });
 })
 
-.controller('SettingsCtrl', function($scope, $state, $filter, $ionicScrollDelegate, dataService) {
+.controller('SettingsCtrl', function($scope, $rootScope, $state, $filter, $ionicPopup, $ionicScrollDelegate, dataService, userService) {
 
     $scope.getData = function() {
         $scope.userProfile = dataService.getUserProfile();
     }
 
     $scope.logout = function() {
-        dataService.clearData();
-        $state.go('login');
+        userService.logout(function() {
+            dataService.clearData();
+            $state.go('login');
+        });
+    }
+
+    $scope.changePassword = function() {
+        $scope.popupData = {};
+        var myPopup = $ionicPopup.show({
+            template: '<input type="password" ng-model="popupData.pass1" placeholder="Пароль">' +
+                      '<input type="password" ng-model="popupData.pass2" placeholder="Подтверждение пароля">',
+            title   : 'Задайте новый пароль',
+            scope   : $scope,
+            buttons : [{
+                text: 'Отмена',
+                type: 'button-positive'
+            }, {
+                text: 'ОК',
+                type: 'button-positive',
+                onTap: function(e) {
+                    if (!$scope.popupData.pass1 || !$scope.popupData.pass2) {
+                        //don't allow the user to close unless he enters wifi password
+                        $rootScope.$broadcast('loading:showError', 'Заполните все обязательные поля');
+                        e.preventDefault();
+                    } else {
+                        if ($scope.popupData.pass1 != $scope.popupData.pass2) {
+                            e.preventDefault();
+                            $rootScope.$broadcast('loading:showError', 'Пароль и подтверждение не совпадают');
+                        }
+                        else {
+                            return $scope.popupData;
+                        }
+                    }
+                }
+            }]
+        });
+        myPopup.then(function(res) {
+            if (res === undefined) {
+                return;
+            }
+
+            $rootScope.$broadcast('loading:show', "Смена пароля...");
+            userService.changePassword(res.pass1, function() {
+                $rootScope.$broadcast('loading:hide');
+            });
+        });
     }
 
     $scope.getPremiumStatus = function(userProfile) {

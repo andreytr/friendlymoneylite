@@ -41,6 +41,25 @@ angular.module('fm.services', [])
              .success(function(result) {
                  return true;
              });
+        },
+
+        logout: function(callback) {
+             return $http.post(mainUrl + "user/logout")
+             .success(function(result) {
+                 callback.call(this);
+                 return true;
+             });
+        },
+
+        changePassword: function(password, callback) {
+            return $http.post(mainUrl + "user/changePassword", {
+                password: password,
+                password2: password
+            })
+            .success(function(result) {
+                callback.call(this);
+                return true;
+            });
         }
    }
 })
