@@ -60,7 +60,16 @@ angular.module('fm.services', [])
                 callback.call(this);
                 return true;
             });
+        },
+
+        saveProfile: function(profile, callback) {
+            return $http.post(mainUrl + "user/saveProfile", profile)
+            .success(function(result) {
+                callback.call(this);
+                return true;
+            });
         }
+
    }
 })
 

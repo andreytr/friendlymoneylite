@@ -961,6 +961,19 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         $scope.userProfile = dataService.getUserProfile();
     }
 
+    $scope.save = function(userProfile) {
+        $rootScope.$broadcast('loading:show', "Сохранение профиля...");
+        userService.saveProfile({
+            email: userProfile['email'],
+            defaultCurrency: userProfile['defaultCurrency'],
+            groupLineReportToDefaultCurrency: userProfile['groupLineReportToDefaultCurrency'],
+            groupBarReportToDefaultCurrency: userProfile['groupBarReportToDefaultCurrency']
+        }, function() {
+            $rootScope.$broadcast('loading:hide');
+            $scope.doRefresh(true);
+        });
+    }
+
     $scope.logout = function() {
         userService.logout(function() {
             dataService.clearData();
