@@ -780,6 +780,7 @@ angular.module('fm.services', [])
             settingsService.setObject('fmData.currencyList', null);
             settingsService.setObject('fmData.accountTypeList', null);
             settingsService.setObject('fmData.categoriesTreeList', null);
+            settingsService.setObject('fmData.security', null);
         },
 
         getUserProfile: function() {
@@ -800,6 +801,14 @@ angular.module('fm.services', [])
 
         getCategoryList: function() {
             return settingsService.getObject('fmData.categoriesTreeList');
+        },
+
+        getSecurity: function() {
+            return settingsService.getObject('fmData.security');
+        },
+
+        setSecurity: function(security) {
+            settingsService.setObject('fmData.security', security);
         }
 
     }
@@ -818,7 +827,7 @@ angular.module('fm.services', [])
         },
 
         getObject: function(key) {
-            return JSON.parse($window.localStorage[key] || {});
+            return JSON.parse($window.localStorage[key] || "{}");
         },
 
         setObject: function(key, obj) {

@@ -959,10 +959,12 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
     $scope.getData = function() {
         $scope.userProfile = dataService.getUserProfile();
+        $scope.security = dataService.getSecurity();
     }
 
     $scope.save = function(userProfile) {
         $rootScope.$broadcast('loading:show', "Сохранение профиля...");
+        dataService.setSecurity($scope.security);
         userService.saveProfile({
             email: userProfile['email'],
             defaultCurrency: userProfile['defaultCurrency'],

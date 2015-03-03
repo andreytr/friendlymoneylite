@@ -45,6 +45,32 @@
             </div>
 
             <div class="item item-divider">
+                Безопасность
+            </div>
+
+
+            <div class="list padding-left-30 padding-right-30" style="padding-top: 2px">
+                <ul class="list">
+                    <li class="item item-toggle">
+                        Вход по PIN-коду
+
+                        <label class="toggle">
+                            <input type="checkbox" ng-model="security.usePin">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+
+                <label class="item-input item-floating-label" ng-if="security.usePin">
+                    <span class="input-label">PIN</span>
+                    <input type="password" ng-model="security.pin" placeholder="PIN" required>
+                </label>
+            </div>
+
+
+            <div class="item item-divider">
                 Учетная запись
             </div>
 
