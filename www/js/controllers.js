@@ -437,7 +437,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 })
 
 
-.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, iconService, categoryService) {
+.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, iconService, categoryService, dataService) {
 
     $scope.showMenu = function(account) {
         $ionicActionSheet.show({
@@ -454,13 +454,17 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.doRefresh = function(isPull) {
-        categoryService.getTreeList().then(function(data) {
-            $scope.categoryList = data;
-        });
+        $scope.categoryList = dataService.getCategoryList();
 
         if (isPull) {
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$apply();
+            dataService.loadData(function() {
+                $scope.categoryList = dataService.getCategoryList();
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            }, function() {
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            });
         }
     };
 
@@ -513,7 +517,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
         categoryService.update(data).then(function(data) {
             $scope.modal.hide();
-            $scope.doRefresh(false);
+            $scope.doRefresh(true);
         });
     };
 
