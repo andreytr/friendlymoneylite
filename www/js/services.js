@@ -152,11 +152,20 @@ angular.module('fm.services', [])
    }
 })
 
-.factory('operationService', function($http) {
+.factory('operationService', function($http, $filter) {
 
    return {
         getList: function(page, count, filter) {
-            return $http.post(mainUrl + "operation/list?page=" + page + "&count=" + count, filter)
+            var dataFilter = filter;
+
+            if (dataFilter['fromDate']) {
+                dataFilter['fromDate'] = $filter('date')(dataFilter['fromDate'], "yyyy-MM-dd");
+            }
+            if (dataFilter['toDate']) {
+                dataFilter['toDate'] = $filter('date')(dataFilter['toDate'], "yyyy-MM-dd");
+            }
+
+            return $http.post(mainUrl + "operation/list?page=" + page + "&count=" + count, dataFilter)
             .success(function(result) {
                 return result;
             });

@@ -205,7 +205,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         var pageSize = 30;
         var page = $scope.loadedPage + 1;
 
-        operationService.getList(page, pageSize, {}).then(function(result) {
+        operationService.getList(page, pageSize, $scope.filter).then(function(result) {
             $scope.loadedPage = page;
 
             if (result.data.length > 0) {
@@ -342,15 +342,31 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         });
     }
 
+    $scope.filter = {};
+    $ionicModal.fromTemplateUrl('templates/operationFilter.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.filterModal = modal
+    })
+
+    $scope.goToFilter = function() {
+        $scope.filterModal.show();
+    }
+
+    $scope.closeForm = function() {
+        $scope.filterModal.hide();
+    };
+
+    $scope.applyFilter = function() {
+        $scope.filterModal.hide();
+        $scope.doRefresh(true);
+    };
+
     $scope.$on('$destroy', function() {
         $scope.editModal.remove();
+        $scope.filterModal.remove();
     });
-
-
-
-
-
-
 
     $scope.$on('$stateChangeSuccess', function() {
         $scope.doRefresh(false);
