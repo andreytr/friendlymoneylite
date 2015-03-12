@@ -20,7 +20,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
         $rootScope.$broadcast('loading:show');
         userService.login(user.username, user.password).then(function(result) {
-            if (result) {
+            if (result && result['data']) {
+                dataService.setToken(result['data'][0]['token']);
                 dataService.loadData(function() {
                     $state.go('app.main');
                     $rootScope.$broadcast('loading:hide');
@@ -63,7 +64,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             password2: user.confirmPassword
         })
         .then(function(result) {
-            if (result) {
+            if (result && result['data']) {
+                dataService.setToken(result['data'][0]['token']);
                 dataService.loadData(function() {
                     $state.go('app.main');
                     $rootScope.$broadcast('loading:hide');

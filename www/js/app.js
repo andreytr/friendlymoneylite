@@ -36,47 +36,12 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    $httpProvider.defaults.withCredentials = true;
-    $httpProvider.defaults.headers.common["Access-Control-Allow-Origin"] = "localhost:8100";
     $httpProvider.defaults.headers.common["Accept"] = "application/json";
     $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
 
     $ionicConfigProvider.backButton.text('');
 
-    $httpProvider.interceptors.push(function($q, $rootScope) {
-        return {
-            request: function(config) {
-                //$rootScope.$broadcast('loading:show')
-                return config
-            },
-            response: function(response) {
-                $rootScope.$broadcast('loading:hide');
-                if (response.data && typeof response.data === 'object' && 'rows' in response.data) {
-                    if (response.data.success) {
-                        response.data = response.data.rows;
-                    }
-                    else if (response.data.errors && response.data.errors.length > 0) {
-                        $rootScope.$broadcast('loading:showError', response.data.errors[0].message);
-                        return $q.reject(response);
-                    }
-                    else {
-                        $rootScope.$broadcast('loading:showError', "Ошибка сервера");
-                        return $q.reject(response);
-                    }
-                }
-
-                return response
-            },
-            'responseError': function(rejection) {
-                $rootScope.$broadcast('loading:hide')
-                if (rejection.status == 0) {
-                    $rootScope.$broadcast('loading:showError', 'Сервер временно не доступен');
-                }
-                return $q.reject(rejection);
-            }
-        }
-    });
+    $httpProvider.interceptors.push('HttpInterceptor');
 
 
     $stateProvider.state('login', {

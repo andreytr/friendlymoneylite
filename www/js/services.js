@@ -1,8 +1,49 @@
 //var mainUrl = 'https://friendly-money.com/api/';
-var mainUrl = 'http://127.0.0.1:8080/friendly-money/api/';
+var mainUrl = 'http://192.168.0.101:8080/friendly-money/api/';
 
 
 angular.module('fm.services', [])
+
+.factory('HttpInterceptor', function($q, $rootScope, settingsService) {
+    return {
+        request: function(config) {
+            config.headers = config.headers || {};
+
+            var token = settingsService.get('fmData.token');
+            if (token && token != 'null') {
+                config.headers['X-Auth-Token'] = token;
+            }
+
+            //$rootScope.$broadcast('loading:show')
+            return config
+        },
+        response: function(response) {
+            $rootScope.$broadcast('loading:hide');
+            if (response.data && typeof response.data === 'object' && 'rows' in response.data) {
+                if (response.data.success) {
+                    response.data = response.data.rows;
+                }
+                else if (response.data.errors && response.data.errors.length > 0) {
+                    $rootScope.$broadcast('loading:showError', response.data.errors[0].message);
+                    return $q.reject(response);
+                }
+                else {
+                    $rootScope.$broadcast('loading:showError', "Ошибка сервера");
+                    return $q.reject(response);
+                }
+            }
+
+            return response
+        },
+        'responseError': function(rejection) {
+            $rootScope.$broadcast('loading:hide')
+            if (rejection.status == 0) {
+                $rootScope.$broadcast('loading:showError', 'Сервер временно не доступен');
+            }
+            return $q.reject(rejection);
+        }
+    }
+})
 
 .factory('LoadingService', ['$ionicLoading', function($ionicLoading) {
     return {
@@ -24,11 +65,19 @@ angular.module('fm.services', [])
 
 .factory('userService', function($http, $ionicPopup) {
 
-   return {
+    var currentPlatform = ionic.Platform.platform();
+    var currentPlatformVersion = ionic.Platform.version();
+
+    var getAppName = function() {
+        return 'FM Lite: ' + currentPlatform + ' ' + currentPlatformVersion;
+    }
+
+    return {
         login: function(username, password) {
              return $http.post(mainUrl + "user/login", {
                     name: username,
-                    password: password
+                    password: password,
+                    appName: getAppName()
                  }
              )
              .success(function(result) {
@@ -37,6 +86,7 @@ angular.module('fm.services', [])
         },
 
         register: function(userData) {
+             userData['appName'] = getAppName();
              return $http.post(mainUrl + "user/register", userData)
              .success(function(result) {
                  return true;
@@ -790,6 +840,7 @@ angular.module('fm.services', [])
             settingsService.setObject('fmData.accountTypeList', null);
             settingsService.setObject('fmData.categoriesTreeList', null);
             settingsService.setObject('fmData.security', null);
+            settingsService.set('fmData.token', "");
         },
 
         getUserProfile: function() {
@@ -818,8 +869,15 @@ angular.module('fm.services', [])
 
         setSecurity: function(security) {
             settingsService.setObject('fmData.security', security);
-        }
+        },
 
+        getToken: function() {
+            return settingsService.get('fmData.token');
+        },
+
+        setToken: function(token) {
+            settingsService.set('fmData.token', token);
+        }
     }
 })
 
