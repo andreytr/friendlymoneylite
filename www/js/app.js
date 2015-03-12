@@ -1,6 +1,6 @@
 angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
 
-.run(function($ionicPlatform, $http, $rootScope, $ionicLoading, $ionicPopup) {
+.run(function($ionicPlatform, $http, $rootScope, $ionicLoading, $ionicPopup, $state) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -32,6 +32,11 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
              template: message
         });
     })
+
+    $rootScope.$on('state:login', function() {
+        $state.go('login');
+    })
+
 
 })
 
@@ -155,6 +160,11 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/login');
+    if (window.localStorage['fmData.token']) {
+        $urlRouterProvider.otherwise('/app/main');
+    }
+    else {
+        $urlRouterProvider.otherwise('/login');
+    }
 
 });

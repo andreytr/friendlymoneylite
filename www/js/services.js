@@ -40,6 +40,11 @@ angular.module('fm.services', [])
             if (rejection.status == 0) {
                 $rootScope.$broadcast('loading:showError', 'Сервер временно не доступен');
             }
+            if (rejection.status == 401) {
+                $rootScope.$broadcast('loading:showError', 'Необходимо авторизоваться');
+                settingsService.set('fmData.token', "");
+                $rootScope.$broadcast('state:login');
+            }
             return $q.reject(rejection);
         }
     }
