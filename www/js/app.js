@@ -45,6 +45,8 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
     $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
 
     $ionicConfigProvider.backButton.text('');
+    $ionicConfigProvider.views.maxCache(3);
+    $ionicConfigProvider.templates.maxPrefetch(5)
 
     $httpProvider.interceptors.push('HttpInterceptor');
 
