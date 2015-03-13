@@ -26,7 +26,6 @@ body input {
 }
 
 .right-buttons {
-    width: 90px;
     text-align: right;
 }
 
@@ -98,7 +97,7 @@ textarea {
         border-bottom: none;
     }
 
-    .menu-list .item a.activated .menu-content-item {
+    .menu-list .item a.activated .menu-content-item, .menu-list .item a:active .menu-content-item {
         border-bottom: none;
     }
 
@@ -131,7 +130,7 @@ textarea {
     text-transform: uppercase;
     font-weight: bold;
     color: white;
-    max-width: 160px;
+    max-width: none;
 }
 
 .tab-item.active,
