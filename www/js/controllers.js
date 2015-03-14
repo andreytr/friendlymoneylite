@@ -375,7 +375,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     });
 })
 
-.controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService) {
+.controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService, dataService) {
 
     $scope.showMenu = function(account) {
         var hideSheet = $ionicActionSheet.show({
@@ -400,9 +400,50 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         return iconService.getCurrencyIcon(currency.type);
     };
 
+    $scope.getCurrencyIconByType = function(currencyType) {
+        return iconService.getCurrencyIcon(currencyType);
+    };
+
+    $scope.getTotalValue = function(accountList) {
+        var sum = {};
+
+        if (!accountList) {
+            return sum;
+        }
+
+        var profile = dataService.getUserProfile();
+        if (profile['defaultCurrency'] && profile['defaultCurrency']['type']) {
+            sum[profile['defaultCurrency']['type']] = 0;
+        }
+
+        for(var i = 0; i < accountList.length; i++) {
+            var account = accountList[i];
+            var currencyType = account['currency']['type'];
+
+            if (!sum.hasOwnProperty(currencyType)) {
+                sum[currencyType] = 0;
+            }
+
+            sum[currencyType] += account['value'];
+        }
+
+        var result = [];
+        for(key in sum) {
+            if (sum[key]) {
+                result.push({
+                    currency: key,
+                    value: sum[key]
+                });
+            }
+        }
+
+        return result;
+    }
+
     $scope.doRefresh = function(isPull) {
         accountService.getList().then(function(data) {
             $scope.accountList = data;
+            $scope.totalValue = $scope.getTotalValue(data);
         });
 
         if (isPull) {
@@ -412,7 +453,6 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.doRefresh(false);
-
 
 
     $ionicModal.fromTemplateUrl('templates/accountEdit.html', {

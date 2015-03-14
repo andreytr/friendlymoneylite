@@ -4,7 +4,7 @@
         </button>
     </ion-nav-buttons>
 
-    <ion-content>
+    <ion-content class="has-footer">
         <ion-refresher pulling-text="Обновить" on-refresh="doRefresh(true)">
         </ion-refresher>
 
@@ -22,4 +22,14 @@
         </div>
 
     </ion-content>
+
+    <div class="bar bar-footer bar-accounts">
+        <div class="left">Всего:</div>
+        <div class="right">
+            <span ng-repeat="sum in totalValue">
+                {{sum.value}}&nbsp<span class="amount-icon {{getCurrencyIconByType(sum.currency)}}"></span><span ng-if="!$last">,</span>
+            </span>
+        </div>
+    </div>
+
 </ion-view>
