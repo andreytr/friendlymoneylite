@@ -18,7 +18,6 @@ angular.module('fm.services', [])
             return config
         },
         response: function(response) {
-            $rootScope.$broadcast('loading:hide');
             if (response.data && typeof response.data === 'object' && 'rows' in response.data) {
                 if (response.data.success) {
                     response.data = response.data.rows;

@@ -308,7 +308,7 @@ angular.module('fm.directives', [])
     };
 })
 
-.directive('accountSelect', function($ionicModal, accountService, iconService){
+.directive('accountSelect', function($ionicModal, $rootScope, accountService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -341,14 +341,18 @@ angular.module('fm.directives', [])
             }
 
             $scope.doRefresh = function(isPull) {
+                if (!isPull) {
+                    $rootScope.$broadcast('loading:show');
+                }
+
                 accountService.getList().then(function(data) {
                     $scope.recordList = data;
+                    if (isPull) {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }
+                    $rootScope.$broadcast('loading:hide');
                 });
-
-                if (isPull) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    $scope.$apply();
-                }
             };
 
             $scope.select = function(account) {
@@ -374,7 +378,7 @@ angular.module('fm.directives', [])
 })
 
 
-.directive('shopSelect', function($ionicModal, shopService, iconService){
+.directive('shopSelect', function($ionicModal, $rootScope, shopService, iconService){
     return {
         restrict: 'E',
         replace : true,
@@ -408,14 +412,17 @@ angular.module('fm.directives', [])
             }
 
             $scope.doRefresh = function(isPull) {
+                if (!isPull) {
+                    $rootScope.$broadcast('loading:show');
+                }
                 shopService.getList().then(function(data) {
                     $scope.recordList = data.data;
+                    if (isPull) {
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $scope.$apply();
+                    }
+                    $rootScope.$broadcast('loading:hide');
                 });
-
-                if (isPull) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    $scope.$apply();
-                }
             };
 
             $scope.select = function(shop) {

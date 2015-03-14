@@ -179,7 +179,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('OperationsCtrl', function($scope, $filter, $ionicModal, $ionicScrollDelegate, iconService, operationService) {
+.controller('OperationsCtrl', function($scope, $filter, $ionicModal, $ionicScrollDelegate, $rootScope, iconService, operationService) {
 
     $scope.getItemHeight = function(operation, index) {
         if (operation.temp.needShowGroup) {
@@ -199,6 +199,10 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     }
 
     $scope.doRefresh = function(isPull) {
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
+
         $scope.operations = [];
         $scope.loadedPage = 0;
 
@@ -207,6 +211,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$apply();
             }
+            $rootScope.$broadcast('loading:hide');
         });
     };
 
@@ -337,6 +342,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             $scope.doRefresh(false);
         };
 
+        $rootScope.$broadcast('loading:show', 'Сохранение');
+
         if (tab == 'TRANSFER') {
             operationService.transfer($scope.transfer).then(callback);
         }
@@ -363,13 +370,13 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         $scope.filterModal.show();
     }
 
-    $scope.closeForm = function() {
+    $scope.closeFilterForm = function() {
         $scope.filterModal.hide();
     };
 
     $scope.applyFilter = function() {
         $scope.filterModal.hide();
-        $scope.doRefresh(true);
+        $scope.doRefresh(false);
     };
 
     $scope.$on('$destroy', function() {
@@ -382,7 +389,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     });
 })
 
-.controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, accountService, iconService, dataService) {
+.controller('AccountsCtrl', function($scope, $ionicActionSheet, $ionicModal, $rootScope, accountService, iconService, dataService) {
 
     $scope.showMenu = function(account) {
         var hideSheet = $ionicActionSheet.show({
@@ -448,9 +455,13 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     }
 
     $scope.doRefresh = function(isPull) {
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
         accountService.getList().then(function(data) {
             $scope.accountList = data;
             $scope.totalValue = $scope.getTotalValue(data);
+            $rootScope.$broadcast('loading:hide');
         });
 
         if (isPull) {
@@ -484,6 +495,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.save = function(account) {
+        $rootScope.$broadcast('loading:show', 'Сохранение');
         accountService.update(account).then(function(data) {
             $scope.modal.hide();
             $scope.doRefresh(false);
@@ -491,6 +503,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.remove = function(account) {
+        $rootScope.$broadcast('loading:show', 'Удаление');
         accountService.remove(account.id).then(function(data) {
             $scope.doRefresh(false);
         });
@@ -502,7 +515,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 })
 
 
-.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, iconService, categoryService, dataService) {
+.controller('CategoryListCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, $rootScope, iconService, categoryService, dataService) {
 
     $scope.showMenu = function(account) {
         $ionicActionSheet.show({
@@ -526,6 +539,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
                 $scope.categoryList = dataService.getCategoryList();
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$apply();
+                $rootScope.$broadcast('loading:hide');
             }, function() {
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$apply();
@@ -571,6 +585,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.saveCategory = function(category) {
+        $rootScope.$broadcast('loading:show', 'Сохранение');
+
         var data = {
             id  : category.id,
             name: category.name,
@@ -581,6 +597,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
         }
 
         categoryService.update(data).then(function(data) {
+            $rootScope.$broadcast('loading:show');
             $scope.modal.hide();
             $scope.doRefresh(true);
         });
@@ -594,7 +611,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 
 
-.controller('ShopListCtrl', function($scope, $ionicActionSheet, $ionicModal, shopService, iconService) {
+.controller('ShopListCtrl', function($scope, $ionicActionSheet, $ionicModal, $rootScope, shopService, iconService) {
 
     $scope.showMenu = function(shop) {
         var hideSheet = $ionicActionSheet.show({
@@ -622,14 +639,19 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.doRefresh = function(isPull) {
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
+
         shopService.getList().then(function(data) {
             $scope.shopList = data.data;
-        });
 
-        if (isPull) {
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$apply();
-        }
+            if (isPull) {
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            }
+            $rootScope.$broadcast('loading:hide');
+        });
     };
 
     $scope.doRefresh(false);
@@ -657,6 +679,8 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     };
 
     $scope.save = function(shop) {
+        $rootScope.$broadcast('loading:show', 'Сохранение');
+
         var record = {
             id: shop.id,
             name: shop.name,
@@ -685,17 +709,22 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 })
 
 
-.controller('ReportListCtrl', function($scope, $stateParams, reportService) {
+.controller('ReportListCtrl', function($scope, $stateParams, $rootScope, reportService) {
 
     $scope.doRefresh = function(isPull) {
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
+
         reportService.getList().then(function(data) {
             $scope.reports = data;
-        });
 
-        if (isPull) {
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$apply();
-        }
+            if (isPull) {
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            }
+            $rootScope.$broadcast('loading:hide');
+        });
     };
 
     $scope.getIcon = function(type) {
@@ -719,7 +748,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
     $scope.doRefresh(false);
 })
 
-.controller('ReportCtrl', function($scope, $state, $stateParams, $ionicModal, reportService, iconService) {
+.controller('ReportCtrl', function($scope, $state, $stateParams, $ionicModal, $rootScope, reportService, iconService) {
 
     var chartColors = iconService.getColorList();
 
@@ -901,6 +930,10 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             $state.go('app.reports');
         }
 
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
+
         reportService.getData($scope.report.name, $scope.filter).then(function(result) {
             $scope.chartType = $scope.getChartType($scope.report.type);
             $scope.chartData = $scope.getChartData($scope.report.type, result.data);
@@ -910,6 +943,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$apply();
             }
+            $rootScope.$broadcast('loading:hide');
         });
     };
 
@@ -949,20 +983,25 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
 
 })
 
-.controller('MessagesCtrl', function($scope, $ionicModal, $ionicScrollDelegate, messagesService, smsService) {
+.controller('MessagesCtrl', function($scope, $ionicModal, $ionicScrollDelegate, $rootScope, messagesService, smsService) {
     $scope.receivedMessages = [];
 
     $scope.doRefresh = function(isPull) {
+        if (!isPull) {
+            $rootScope.$broadcast('loading:show');
+        }
+
         messagesService.loadTemplates(function() {
             $scope.availableNumbers = messagesService.getAvailableNumbers();
             $scope.stat = messagesService.getMessageStats();
             $scope.receivedMessages = messagesService.getReceivedMessages();
-        });
 
-        if (isPull) {
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$apply();
-        }
+            if (isPull) {
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$apply();
+            }
+            $rootScope.$broadcast('loading:hide');
+        });
     };
 
     $scope.changeTab = function(tab) {

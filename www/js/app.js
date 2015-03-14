@@ -46,7 +46,7 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
 
     $ionicConfigProvider.backButton.text('');
     $ionicConfigProvider.views.maxCache(3);
-    $ionicConfigProvider.templates.maxPrefetch(5)
+    $ionicConfigProvider.templates.maxPrefetch(30);
 
     $httpProvider.interceptors.push('HttpInterceptor');
 
