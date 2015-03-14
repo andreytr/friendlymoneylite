@@ -163,7 +163,8 @@ angular.module('fm', ['ionic', 'fm.controllers', 'fm.services'])
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage['fmData.token']) {
-        $urlRouterProvider.otherwise('/app/main');
+        //$urlRouterProvider.otherwise('/app/main');
+        $urlRouterProvider.otherwise('/app/operations');
     }
     else {
         $urlRouterProvider.otherwise('/login');
