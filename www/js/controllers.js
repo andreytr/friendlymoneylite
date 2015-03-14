@@ -1,6 +1,13 @@
 angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, dataService) {
+
+    $scope.userName = "Friendly Money";
+
+    var profile = dataService.getUserProfile();
+    if (profile && profile['username']) {
+        $scope.userName = profile['username'];
+    }
 
 })
 
@@ -23,7 +30,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             if (result && result['data']) {
                 dataService.setToken(result['data'][0]['token']);
                 dataService.loadData(function() {
-                    $state.go('app.main');
+                    $state.go('app.operations');
                     $rootScope.$broadcast('loading:hide');
                 }, function() {
                     $rootScope.$broadcast('loading:hide');
@@ -67,7 +74,7 @@ angular.module('fm.controllers', ['fm.services', 'fm.directives', 'angularCharts
             if (result && result['data']) {
                 dataService.setToken(result['data'][0]['token']);
                 dataService.loadData(function() {
-                    $state.go('app.main');
+                    $state.go('app.operations');
                     $rootScope.$broadcast('loading:hide');
                 }, function() {
                     $rootScope.$broadcast('loading:hide');
